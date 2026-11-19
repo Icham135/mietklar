@@ -360,3 +360,14 @@ section{padding:clamp(64px,8vw,112px) 0}
 .sheet,.facts dd,.kmeta dd,.lform input{overflow-wrap:anywhere}
 footer nav{flex-wrap:wrap}
 .faq summary .q{flex:1;min-width:0;overflow-wrap:anywhere}
+
+/* Mietklar Dossier: Angebot hochwertiger */
+.offer{position:relative;padding:26px 28px;background:linear-gradient(135deg,var(--night) 0%,var(--fjord) 55%,var(--deep) 100%);border:1px solid rgba(240,160,115,.32);box-shadow:var(--sh-2)}
+.offer-k{display:block;margin-bottom:8px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--apricot)}
+.offer b{display:block;font-size:clamp(20px,2.4vw,24px);letter-spacing:-.02em;line-height:1.2}
+.offer p{margin-top:8px}
+.offer .btn{background:var(--apricot);color:var(--night);font-weight:600}
+.offer .btn:hover{background:#F4B48E}
+.buy-price span{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--lake)}
+.tier.best{background:linear-gradient(160deg,var(--night),var(--deep));border:1px solid rgba(240,160,115,.32)}
+@media (max-width:700px){.offer{padding:22px 20px}}

@@ -164,7 +164,7 @@
     const T = {
       mode() {
         return `<h3 data-focus>Wohnst du schon dort oder bist du gerade eingezogen?</h3><p class="lead">So wählen wir den richtigen Check.</p>
-        ${PAID_LAST ? `<p class="hint"><a class="linkbtn" href="?order=${esc(PAID_LAST)}#check">Dein gekauftes Brief-Paket erneut öffnen</a></p>` : ''}<div class="choice"><button type="button" data-mode="bestand"><b>Ich wohne schon dort</b><span>Referenzzins: Kann meine Miete sinken?</span></button><button type="button" data-mode="neu"><b>Ich bin gerade eingezogen</b><span>Anfangsmiete: Du hast 30 Tage zum Anfechten</span></button></div>`;
+        ${PAID_LAST ? `<p class="hint"><a class="linkbtn" href="?order=${esc(PAID_LAST)}#check">Dein gekauftes Dossier erneut öffnen</a></p>` : ''}<div class="choice"><button type="button" data-mode="bestand"><b>Ich wohne schon dort</b><span>Referenzzins: Kann meine Miete sinken?</span></button><button type="button" data-mode="neu"><b>Ich bin gerade eingezogen</b><span>Anfangsmiete: Du hast 30 Tage zum Anfechten</span></button></div>`;
       },
       rent() {
         return `<form class="wform" novalidate><h3 data-focus>Wie hoch ist deine Netto-Miete pro Monat?</h3><div class="fld"><label for="wRent">CHF pro Monat, ohne Nebenkosten</label><input id="wRent" type="text" inputmode="decimal" autocomplete="off" value="${esc(W.rent)}" placeholder="z. B. 2100"></div><p class="hint">Steht im Mietvertrag oder in der letzten Mietzinsanzeige.</p>${errHTML}<button class="btn btn-dark" type="submit">Weiter</button></form>`;
@@ -234,8 +234,8 @@
   const srcHTML = keys => `<p class="srcline"><b>Datenstand ${CONFIG.stand}</b>${W.mode === 'bestand' ? ' · Referenzzins ' + CUR.label + ' seit ' + CUR.since + ', nächste Publikation ' + CUR.next : ''}. Quellen: ${keys.map(k => `<a href="${QUELLEN[k][1]}" target="_blank" rel="noopener">${QUELLEN[k][0]}</a>`).join(' · ')}</p>`;
   const factsHTML = rows => `<div class="facts"><b class="facts-h">Deine Angaben</b><dl>${rows.map(([k, val, step]) => `<div><dt>${k}</dt><dd>${val}${step ? ` <button type="button" class="linkbtn" data-edit="${step}" aria-label="${k} ändern">ändern</button>` : ''}</dd></div>`).join('')}</dl></div>`;
   const priceTxt = () => 'CHF ' + CONFIG.price;
-  const offerHTML = () => `<div class="offer"><div><b>Brief-Paket für ${priceTxt()}</b><p>Fertiger Brief mit deinen Zahlen, zum Ausdrucken und Unterschreiben. Dazu Berechnung und Checkliste. Erst ansehen, dann entscheiden.</p></div><button class="btn btn-dark" type="button" data-act="letter" data-track="cta_letter_click">Vorschau ansehen</button></div>`;
-  const noOfferHTML = why => `<p class="nooffer"><b>Kein Brief-Paket für dieses Ergebnis.</b> ${why}</p>`;
+  const offerHTML = () => `<div class="offer"><div><span class="offer-k">Mietklar Dossier · ${priceTxt()}</span><b>Dein Brief, fertig zum Unterschreiben</b><p>Persönlich formuliert mit deinen Zahlen, dazu die nachvollziehbare Berechnung und dein Fristenplan. Erst die Vorschau ansehen, dann entscheiden.</p></div><button class="btn btn-dark" type="button" data-act="letter" data-track="cta_letter_click">Vorschau ansehen</button></div>`;
+  const noOfferHTML = why => `<p class="nooffer"><b>Kein Dossier für dieses Ergebnis.</b> ${why}</p>`;
   const copyBox = (id, title, text) => `<div class="copybox"><label for="${id}"><b>${title}</b></label><textarea id="${id}" rows="8">${esc(text)}</textarea><button class="btn btn-line" type="button" data-copy="${id}">Text kopieren</button></div>`;
   const scenHTML = (rows) => { const mx = Math.max(rows[0][1], 1); return `<div class="scen" role="list" aria-label="Wie die Gegenrechnung wirkt">${rows.map(([k, val, cls]) => `<div class="sc ${cls || ''}" role="listitem"><span>${k}</span><b>${chf(val)} / Mt.</b><i style="--w:${Math.max(1.5, 100 * Math.max(0, val) / mx).toFixed(1)}%"></i></div>`).join('')}</div>`; };
   const ymLabel = (m, y) => MONTHS[m - 1] + ' ' + y;
@@ -397,7 +397,7 @@
   };
   function letterHTML() {
     const L = lastResult, neu = W.mode === 'neu';
-    if (!L || !L.offer) return `<h3 data-focus>Für dieses Ergebnis gibt es kein Brief-Paket</h3><p class="lead">Wir bieten das Paket nur an, wenn dein Check einen plausiblen Vorteil zeigt.</p><div class="rcta"><button class="btn btn-dark" type="button" data-edit="result">Zurück zum Ergebnis</button></div>`;
+    if (!L || !L.offer) return `<h3 data-focus>Für dieses Ergebnis gibt es kein Dossier</h3><p class="lead">Wir bieten das Dossier nur an, wenn dein Check einen plausiblen Vorteil zeigt.</p><div class="rcta"><button class="btn btn-dark" type="button" data-edit="result">Zurück zum Ergebnis</button></div>`;
     const F = (k, l, p) => `<div class="fld"><label for="l_${k}">${l}</label><input id="l_${k}" data-f="${k}" value="${esc(W[k] || '')}" placeholder="${p}" autocomplete="off" spellcheck="false" autocapitalize="off" maxlength="80"></div>`;
     const PH = { name: 'Vorname Nachname', street: 'Strasse Nr.', zip: '8000 Zürich', lname: 'Name', lstreet: 'Strasse Nr.', lzip: '8000 Zürich', obj: 'Strasse Nr., PLZ Ort', ort: 'Zürich', bname: 'z. B. Schlichtungsbehörde ...', bstreet: 'Strasse Nr.', bzip: 'PLZ Ort' };
     if (neu && !W.reason && L.r && L.r.pct >= 10) W.reason = 'b';
@@ -406,14 +406,14 @@
     const s = snapshot(), ov = PAKET.overview(s), ck = PAKET.checklist(s);
     const paid = W.paidOrder;
     const sandbox = SERVER && SERVER.provider === 'sandbox';
-    return `<h3 data-focus>Vorschau: dein Brief-Paket</h3><p class="lead">Trag Namen und Adressen ein. Rechts siehst du genau den Text, der im PDF steht.</p>
-    <div class="deliver"><b>PDF mit 3 A4-Seiten:</b> ${neu ? 'Gesuch an die Schlichtungsbehörde' : 'Brief an den Vermieter'} (ohne Mietklar-Logo), Berechnung mit Quellen, Checkliste für Versand und Frist.</div>
+    return `<h3 data-focus>Vorschau: dein Mietklar Dossier</h3><p class="lead">Trag Namen und Adressen ein. Rechts siehst du genau den Text, der im PDF steht.</p>
+    <div class="deliver"><b>PDF mit 3 A4-Seiten:</b> ${neu ? 'Gesuch an die Schlichtungsbehörde' : 'Brief an den Vermieter'} (ohne Mietklar-Logo), Berechnung mit Quellen, Fristenplan für Versand und Antwort.</div>
     <div class="lwrap"><div class="lform">${fields}${reasons}${neu ? '<p class="hint">Die Adresse der Schlichtungsbehörde findest du auf der Website deiner Gemeinde (Suchbegriff «Schlichtungsbehörde Miete»).</p>' : ''}<p class="hint">Alle Felder sind nötig. Deine Angaben bleiben in diesem Browser.</p></div>
     <div class="sheetbox"><div class="sheet locked" id="sheet" aria-label="Vorschau Seite 1"></div></div></div>
     <details class="pv-more"><summary>Vorschau Seite 2: Berechnungsübersicht</summary><table class="mtab"><tbody>${ov.rows.map(([k, v]) => `<tr><th scope="row">${k}</th><td>${v}</td></tr>`).join('')}</tbody></table></details>
-    <details class="pv-more"><summary>Vorschau Seite 3: Checkliste</summary><ul class="cklist">${ck.map(([t, d]) => `<li><b>${t}</b> ${d}</li>`).join('')}</ul></details>
+    <details class="pv-more"><summary>Vorschau Seite 3: Fristenplan</summary><ul class="cklist">${ck.map(([t, d]) => `<li><b>${t}</b> ${d}</li>`).join('')}</ul></details>
     <div class="buy">
-      <div class="buy-price"><span>Brief-Paket</span><b>CHF ${CONFIG.price}.–</b><small>Endpreis, einmalig, kein Abo</small></div>
+      <div class="buy-price"><span>Mietklar Dossier</span><b>CHF ${CONFIG.price}.–</b><small>Endpreis, einmalig, kein Abo</small></div>
       <p class="buy-data">Der Zahlungsanbieter erhält nur Bestellnummer, Betrag und Produktname. Deine Angaben bleiben auf diesem Gerät, damit du das PDF später erneut laden kannst. Du kannst sie danach löschen.</p>
       <p class="err" id="lMiss" role="alert" hidden></p><p class="hint" id="lChars" hidden></p>
       <div class="rcta"><button class="btn btn-dark" type="button" id="lBuy" data-track="buy_click">${paid ? 'PDF herunterladen (bereits bezahlt)' : 'Weiter zur Zahlung · CHF ' + CONFIG.price}</button><button class="btn btn-line" type="button" data-act="ics">Frist in den Kalender</button></div>
@@ -484,7 +484,7 @@
     if (fromPay && once(id, o.status)) track(o.status === 'paid' ? 'purchase_success' : o.status === 'failed' ? 'purchase_failed' : 'purchase_cancelled', o.path);
     let h;
     const amt = o.currency + ' ' + o.amount.toFixed(2), meta = `<dl class="kmeta"><div><dt>Bestellung</dt><dd>${esc(id)}</dd></div><div><dt>Betrag</dt><dd>${amt}</dd></div>`;
-    if (o.status === 'paid' && saved) h = `<h3 data-focus>Zahlung erfolgreich. Dein Brief-Paket ist bereit.</h3><p class="lead">So geht es weiter:</p><ol class="steps3"><li>PDF herunterladen und prüfen.</li><li>Brief ausdrucken und von Hand unterschreiben.</li><li>${saved.s.mode === 'neu' ? (saved.s.deadline ? 'Gesuch eingeschrieben an die Schlichtungsbehörde senden. Es muss spätestens am <b>' + fdate(parseISO(saved.s.deadline)) + '</b> dort sein.' : 'Gesuch eingeschrieben an die Schlichtungsbehörde senden.') : (saved.s.sendBy ? 'Eingeschrieben an den Vermieter senden. Er muss ihn spätestens am <b>' + fdate(parseISO(saved.s.sendBy)) + '</b> haben.' : 'Eingeschrieben an den Vermieter senden, rechtzeitig vor deinem Kündigungstermin.')}</li></ol>
+    if (o.status === 'paid' && saved) h = `<h3 data-focus>Zahlung erfolgreich. Dein Dossier ist bereit.</h3><p class="lead">So geht es weiter:</p><ol class="steps3"><li>PDF herunterladen und prüfen.</li><li>Brief ausdrucken und von Hand unterschreiben.</li><li>${saved.s.mode === 'neu' ? (saved.s.deadline ? 'Gesuch eingeschrieben an die Schlichtungsbehörde senden. Es muss spätestens am <b>' + fdate(parseISO(saved.s.deadline)) + '</b> dort sein.' : 'Gesuch eingeschrieben an die Schlichtungsbehörde senden.') : (saved.s.sendBy ? 'Eingeschrieben an den Vermieter senden. Er muss ihn spätestens am <b>' + fdate(parseISO(saved.s.sendBy)) + '</b> haben.' : 'Eingeschrieben an den Vermieter senden, rechtzeitig vor deinem Kündigungstermin.')}</li></ol>
       <div class="rcta"><button class="btn btn-dark" type="button" id="kGet">PDF herunterladen</button>${(saved.s.sendBy || saved.s.deadline) ? '<button class="btn btn-line" type="button" id="kIcs">Frist in den Kalender</button>' : ''}</div>
       ${meta}<div><dt>Downloads</dt><dd id="kDl">${o.downloads} von ${o.max_downloads}</dd></div></dl>
       <p class="kauf-small">Notiere dir die Bestellnummer. Deine Angaben liegen nur in diesem Browser. <button type="button" class="linkbtn" id="kDrop">Angaben auf diesem Gerät löschen</button> · <button type="button" class="linkbtn" id="kNew">Neuen Check starten</button></p>`;

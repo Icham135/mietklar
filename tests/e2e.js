@@ -69,7 +69,7 @@ const pdfText = (p) => Buffer.from(fs.readFileSync(p)).toString('latin1');
     await axe(page, 'Ergebnis');
     await page.locator('.offer [data-act=letter]').click(); step('«Vorschau ansehen» geklickt');
     const pv = await page.locator('#wBody').innerText();
-    t('Vorschau: Lieferumfang genannt', /3 A4-Seiten/.test(pv) && /Berechnung/.test(pv) && /Checkliste/.test(pv));
+    t('Vorschau: Lieferumfang genannt', /3 A4-Seiten/.test(pv) && /Berechnung/.test(pv) && /Fristenplan/.test(pv));
     t('Vorschau: vollständiger Preis', /CHF 39\.–/.test(pv) && /Endpreis/.test(pv));
     t('Vorschau: Daten an Zahlungsanbieter genannt', /Zahlungsanbieter erhält nur Bestellnummer/.test(pv));
     t('Vorschau: Seite 2 und 3 einsehbar', await page.locator('details.pv-more').count() === 2);
@@ -134,7 +134,7 @@ const pdfText = (p) => Buffer.from(fs.readFileSync(p)).toString('latin1');
     const d = new Date(); d.setDate(d.getDate() - 5); await page.fill('#wStart', d.toISOString().slice(0, 10)); await sub(page);
     const r2b = await page.locator('#wBody').innerText();
     t('b) Einordnung unter 10 %', /unter etwa 10 %/.test(r2b));
-    t('b) kein Kaufaufruf, mit Begründung', await page.locator('.offer').count() === 0 && /Kein Brief-Paket/.test(r2b));
+    t('b) kein Kaufaufruf, mit Begründung', await page.locator('.offer').count() === 0 && /Kein Dossier/.test(r2b));
     t('b) Mehrkosten pro Jahr genannt', /pro Jahr mehr/.test(r2b));
     track(o); await o.ctx.close();
 

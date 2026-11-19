@@ -2,7 +2,7 @@
   "_hinweis": "Zentrale Einstellungen. Preis hier ändern, dann python3 tools/build.py ausführen und den Server neu starten.",
   "price_chf": 39,
   "currency": "CHF",
-  "product_name": "Mietklar Brief-Paket",
+  "product_name": "Mietklar Dossier",
   "payment_provider": "sandbox",
   "_payment_provider_optionen": "sandbox = lokaler Testablauf ohne echtes Geld. off = Zahlung aus, Messung an (Nachfrage-Test Stufe A). Produktiv (stripe, payrexx, datatrans) braucht Freigabe des Gründers und Zugangsdaten.",
   "max_downloads_per_order": 20,

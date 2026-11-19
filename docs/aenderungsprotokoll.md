@@ -71,3 +71,7 @@ Drei Prüfungen parallel (Design, Bedienung und Texte, Funktion). Umgesetzt:
 - **Server:** Statt einer Sperrliste gilt jetzt eine Positivliste. Vorher waren mit `/vendor/../data/…` oder `/Data/orders.json` interne Dateien und Bestellnummern abrufbar. Jetzt gibt es eine HTML-404-Seite, `/api/funnel` ist nur lokal oder mit `MK_ADMIN_KEY` abrufbar, und eine negative Content-Length wird abgewiesen.
 - **Neue Tests:** `tests/regress-r4.js` mit 15 Prüfungen je Engine, `server.test.js` mit 90 statt 78 Prüfungen, `paket.test.js` mit 149 statt 146.
 - **Offen:** Ein bezahlter Download lässt sich mit einer bekannten Bestellnummer für andere Angaben wiederholen, weil die Angaben bewusst nicht an den Server gehen (Entscheid 3). Zwei gleichzeitige Tabs überschreiben die zuletzt gemerkte Bestellung. Als Datei geöffnet (`file://`) fehlen Schrift und Weltkarte.
+
+## Runde 5 (19.11.2026)
+- Öffentliche Vorschau: https://icham135.github.io/mietklar/ (GitHub Pages, ohne Zahlungsserver, Kauf dort deaktiviert). `noindex` gesetzt, bis Impressum und juristische Freigabe stehen; danach in `tools/build.py` entfernen.
+- «Brief-Paket» heisst jetzt «Mietklar Dossier». Angebotskarte, Preiskarte und Kaufbereich wirken hochwertiger (dunkler Verlauf, Apricot-Akzent). PDF-Seite 3 heisst «Fristenplan: Versand und Antwort».

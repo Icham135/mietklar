@@ -1,5 +1,5 @@
   /* =========================================================
-     Brief-Paket: Brieftext, Berechnungsübersicht, Checkliste.
+     Mietklar Dossier: Brieftext, Berechnungsübersicht, Fristenplan.
      Eine Quelle für Vorschau UND PDF: Was du siehst, bekommst du.
      Eingabe ist ein "Snapshot" (nur im Browser), Ausgabe Text bzw. PDF-Bytes.
      ========================================================= */
@@ -164,7 +164,7 @@
       SOURCES[s.mode].forEach(([t, u]) => { y = D.para(t + ': ' + u, L, y, Wd, { size: 8.2, color: ink2 }) + 0.8; });
       foot(2);
       /* Seite 3: Checkliste */
-      D.page(); D.text('Versand- und Fristencheckliste', L, 24, { size: 16, bold: true }); D.text('Hake ab, was erledigt ist.', L, 31, { size: 9.5, color: ink2 });
+      D.page(); D.text('Fristenplan: Versand und Antwort', L, 24, { size: 16, bold: true }); D.text('Hake ab, was erledigt ist.', L, 31, { size: 9.5, color: ink2 });
       y = 44; checklist(s).forEach(([t, d]) => { D.rect(L, y - 3.8, 4.6, 4.6, { stroke: [0.06, 0.17, 0.2], w: 0.9 }); D.text(t, L + 9, y, { size: 11, bold: true }); y = D.para(d, L + 9, y + 5.4, Wd - 9, { size: 9.8, color: ink2 }) + 5; });
       y += 4; D.para('Mietklar versendet nichts, vertritt niemanden und prüft deinen Einzelfall nicht. Fristen und Formvorschriften liegen in deiner Verantwortung. Bei Unsicherheit helfen der Mieterverband, die Schlichtungsbehörde oder eine Anwältin bzw. ein Anwalt.', L, y, Wd, { size: 9, color: ink2 });
       foot(3);

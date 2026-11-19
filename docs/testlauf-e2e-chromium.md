@@ -1,6 +1,6 @@
 # E2E-Protokoll (chromium, mobil 375 x 812)
 
-Datum: 2026-11-19T15:42:30.471Z  ·  Server: lokaler Sandbox-Server  ·  Browser: 153.0.8010.12
+Datum: 2026-11-19T18:36:06.323Z  ·  Server: lokaler Sandbox-Server  ·  Browser: 153.0.8010.12
 
 
 ## Durchlauf 1: Bestandsmieterin mit plausibler Senkung, bis zum PDF
@@ -13,7 +13,6 @@ Ziel: Anna (Netto-Miete CHF 2’100, Mietzins seit Januar 2024, Termin 31.3.2027
 - [D1 Senkung bis PDF] OK: Startseite nennt Preis des Bezahlteils
 - [D1 Senkung bis PDF] OK: Haupt-CTA «Mietzins kostenlos prüfen»
 - [D1 Senkung bis PDF] OK: Kein horizontales Scrollen (375 px)
-- [D1 Senkung bis PDF] axe (Startseite): keine Verstösse in den geprüften Regeln
 - [D1 Senkung bis PDF] «Ich wohne schon dort» geklickt
 - [D1 Senkung bis PDF] OK: Direkt im Bestandsablauf (Miete-Frage)
 - [D1 Senkung bis PDF] OK: Leere Miete: Fehlermeldung
@@ -27,7 +26,6 @@ Ziel: Anna (Netto-Miete CHF 2’100, Mietzins seit Januar 2024, Termin 31.3.2027
 - [D1 Senkung bis PDF] OK: Ergebnis zeigt Datenstand und Primärquelle
 - [D1 Senkung bis PDF] OK: Ergebnis zeigt Frist
 - [D1 Senkung bis PDF] OK: Kaufangebot sichtbar
-- [D1 Senkung bis PDF] axe (Ergebnis): keine Verstösse in den geprüften Regeln
 - [D1 Senkung bis PDF] «Vorschau ansehen» geklickt
 - [D1 Senkung bis PDF] OK: Vorschau: Lieferumfang genannt
 - [D1 Senkung bis PDF] OK: Vorschau: vollständiger Preis
@@ -36,7 +34,6 @@ Ziel: Anna (Netto-Miete CHF 2’100, Mietzins seit Januar 2024, Termin 31.3.2027
 - [D1 Senkung bis PDF] OK: Kauf ohne Angaben: Hinweis auf fehlende Felder
 - [D1 Senkung bis PDF] Absender, Vermieter, Mietobjekt ausgefüllt
 - [D1 Senkung bis PDF] OK: Vorschau ohne Platzhalter
-- [D1 Senkung bis PDF] axe (Vorschau): keine Verstösse in den geprüften Regeln
 - [D1 Senkung bis PDF] Zur Testzahlung weitergeleitet
 - [D1 Senkung bis PDF] OK: Zahlungsseite: Betrag
 - [D1 Senkung bis PDF] Zahlung schlägt fehl (Test)
@@ -44,7 +41,7 @@ Ziel: Anna (Netto-Miete CHF 2’100, Mietzins seit Januar 2024, Termin 31.3.2027
 - [D1 Senkung bis PDF] Erneut zur Zahlung
 - [D1 Senkung bis PDF] Mit Testkarte bezahlt
 - [D1 Senkung bis PDF] OK: Erfolg: Paket bereit
-- [D1 Senkung bis PDF] PDF heruntergeladen: Mietklar-Brief-63j3pOSL.pdf (12003 Bytes)
+- [D1 Senkung bis PDF] PDF heruntergeladen: Mietklar-Brief-LNgdsqj0.pdf (12005 Bytes)
 - [D1 Senkung bis PDF] OK: PDF: gültige Datei
 - [D1 Senkung bis PDF] OK: PDF: 3 Seiten
 - [D1 Senkung bis PDF] OK: PDF: richtiger Name
@@ -70,7 +67,6 @@ Ziel a: Bestandsmieter mit Mietzins seit März 2021 (Referenzzins 1,25 %). Ziel 
 - [D2 kein Anspruch] OK: a) Begründung mit Satz damals und heute
 - [D2 kein Anspruch] OK: a) kein Kaufaufruf
 - [D2 kein Anspruch] OK: a) Abschluss ohne Kosten erklärt
-- [D2 kein Anspruch] axe (Kein Anspruch): keine Verstösse in den geprüften Regeln
 - [D2 kein Anspruch] OK: b) Direkt im Neumieter-Ablauf (Kanton)
 - [D2 kein Anspruch] OK: b) Einordnung unter 10 %
 - [D2 kein Anspruch] OK: b) kein Kaufaufruf, mit Begründung
@@ -85,7 +81,6 @@ Ziel a: Bestandsmieter kennt das Datum der letzten Mietzinsfestlegung nicht. Zie
 - [D3 Angaben fehlen] OK: a) Spanne je nach Basis
 - [D3 Angaben fehlen] OK: a) Anfrage-Text zum Kopieren
 - [D3 Angaben fehlen] OK: a) kein Kaufaufruf
-- [D3 Angaben fehlen] axe (Angabe fehlt): keine Verstösse in den geprüften Regeln
 - [D3 Angaben fehlen] OK: a) «Datum eingeben» führt zur Frage
 - [D3 Angaben fehlen] OK: b) Vormietzins-Feld deaktiviert
 - [D3 Angaben fehlen] OK: b) nennt fehlenden Vormietzins
@@ -103,7 +98,7 @@ Ziel a: Bestandsmieter kennt das Datum der letzten Mietzinsfestlegung nicht. Zie
 
 ## Netzwerkzugriffe über alle Durchläufe
 
-- [Netzwerk] Angefragte Hosts: localhost:4905
+- [Netzwerk] Angefragte Hosts: localhost:4909
 - [Netzwerk] OK: Nur eigener Server angefragt
 - [Netzwerk] OK: Keine Miete/Adresse/Name in POST-Anfragen
 - [Netzwerk] POST-Ziele: /api/event, /api/checkout, /api/sandbox/<id>/failed, /api/sandbox/<id>/paid, /api/order/<id>/download, /api/sandbox/<id>/cancelled
