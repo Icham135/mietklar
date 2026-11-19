@@ -1,0 +1,56 @@
+{
+ "date": "2026-11-19T12:03:45.729Z",
+ "lighthouse": "12.8.2",
+ "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+ "form": "mobile",
+ "throttling": {
+  "rttMs": 150,
+  "throughputKbps": 1638.4,
+  "requestLatencyMs": 562.5,
+  "downloadThroughputKbps": 1474.5600000000002,
+  "uploadThroughputKbps": 675,
+  "cpuSlowdownMultiplier": 4
+ },
+ "steps": [
+  {
+   "name": "Startseite",
+   "mode": "navigation",
+   "perf": 100,
+   "a11y": 100,
+   "bp": 100,
+   "seo": 100,
+   "lcp": "1.7 s",
+   "cls": "0",
+   "tbt": "0 ms",
+   "fcp": "1.4 s",
+   "fails": [
+    "max-potential-fid (370 ms)",
+    "mainthread-work-breakdown (3.3 s)",
+    "unminified-javascript (Est savings of 7 KiB)",
+    "unused-javascript (Est savings of 22 KiB)",
+    "forced-reflow-insight",
+    "network-dependency-tree-insight"
+   ]
+  },
+  {
+   "name": "Wizard (erste Frage)",
+   "mode": "snapshot",
+   "perf": 0,
+   "a11y": 100,
+   "bp": 100,
+   "seo": 100,
+   "fails": []
+  },
+  {
+   "name": "Ergebnisseite",
+   "mode": "snapshot",
+   "perf": 0,
+   "a11y": 100,
+   "bp": 100,
+   "seo": 100,
+   "fails": [
+    "dom-size (875 elements)"
+   ]
+  }
+ ]
+}

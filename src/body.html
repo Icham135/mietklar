@@ -1,0 +1,227 @@
+<body>
+<a class="skip" href="#main">Zum Inhalt springen</a>
+<noscript><div class="noscript">Mietklar braucht JavaScript, damit die Rechner im Browser funktionieren. Deine Eingaben werden nicht an uns gesendet.</div></noscript>
+
+<!-- Logo-Symbol: Haus mit Tür -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mark" viewBox="0 0 160 160"><rect width="160" height="160" rx="44.8" fill="#0F2B33"/><path d="M80 40 L119 71 V117 H41 V71 Z" fill="#FAF8F4" stroke="#FAF8F4" stroke-width="9" stroke-linejoin="round"/><rect x="66" y="84" width="28" height="33" rx="14" fill="#F0A073"/></symbol>
+</svg>
+
+<div class="prog" id="prog"></div>
+
+<div class="pill" id="pill">
+  <a href="#top" class="logo" aria-label="Mietklar Startseite"><svg class="mk" viewBox="0 0 160 160" aria-hidden="true"><use href="#mark"/></svg><span class="wdt">Mietklar</span></a>
+  <nav aria-label="Hauptnavigation"><a href="#check">Check</a><a href="#zins">Referenzzins</a><a href="#preise">Preis</a><a href="#faq">Fragen</a></nav>
+  <a href="#check" class="btn btn-dark" data-track="nav_cta">Kostenlos prüfen</a>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero" id="top">
+  <div class="sky"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i></div>
+  <div class="glow" id="glow"></div><div class="grain"></div>
+  <div class="hero-in wrap">
+    <a class="eyebrow-pill reveal" href="#zins"><b>Referenzzins heute <span class="js-cur">1,25 %</span></b>Mietzins-Check für die Schweiz</a>
+    <h1 aria-label="Zahlst du zu viel Miete?"><span class="ln">Zahlst du zu viel</span><span class="ln"><em>Miete?</em></span></h1>
+    <p class="sub reveal">In einer Minute weisst du, ob deine Miete sinken kann, um wie viel und bis wann du handeln musst. Kostenlos.</p>
+    <div class="cta-row reveal">
+      <a href="#check" class="btn btn-light" data-magnet data-track="hero_cta">Mietzins kostenlos prüfen <svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    </div>
+    <p class="micro reveal">Ohne Konto · Angaben bleiben auf deinem Gerät · Brief-Paket für CHF <span class="js-price">39</span> nur, wenn es sich lohnt</p>
+  </div>
+  <div class="scene" id="scene">
+    <i class="sun" id="sun"></i>
+    <div class="ridges" id="ridges" aria-hidden="true"></div>
+    <div class="preview" id="hpv" role="group" aria-label="Schnell-Check Referenzzins mit Beispielwerten">
+      <div class="pv-head"><svg class="mk" viewBox="0 0 160 160" aria-hidden="true"><use href="#mark"/></svg><b>Schnell-Check</b><small>Beispielwerte, ändere sie</small></div>
+      <div class="pv-in">
+        <label>Netto-Miete pro Monat (CHF)<input id="hRent" type="text" inputmode="decimal" autocomplete="off" value="2100"></label>
+        <div role="group" aria-labelledby="hSL"><span class="pvl" id="hSL">Mietzins gilt seit</span><span class="pair"><select id="hM" aria-label="Monat"></select><select id="hY" aria-label="Jahr"></select></span></div>
+      </div>
+      <div class="pv-rows"><span class="sr" id="hSr" role="status"></span>
+        <div class="pv-row"><span>Deine Netto-Miete</span><div class="pv-bar"><i id="hB0" style="--w:100%"></i></div><b id="hV0">CHF 2’100</b></div>
+        <div class="pv-row minus"><span>Senkung (Referenzzins)</span><div class="pv-bar"><i id="hB1" style="--w:6%"></i></div><b id="hV1">…</b></div>
+        <div class="pv-row off"><span>Gegenrechnung (Schätzung)</span><div class="pv-bar"><i id="hB2" style="--w:2%"></i></div><b id="hV2">…</b></div>
+        <div class="pv-row total"><span>Möglicher Spielraum</span><div class="pv-bar"><i id="hB3" style="--w:4%"></i></div><b id="hV3">…</b></div>
+      </div>
+      <div class="pv-foot"><span id="hBase">Basis: Referenzzins</span><span id="hCur">Heute: 1,25 %</span><span class="warn" id="hWarn">Richtwert, keine Zusage</span></div>
+      <a href="#check" class="pv-link" id="hFull" data-track="hero_full_check">Mit Frist weiterrechnen →</a>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<!-- ===================== CHECK (WIZARD) ===================== -->
+<section id="check" class="sec-check">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="tag"><i></i>Dein Check</span><h2>Vier Fragen. <em>Gratis.</em></h2><p>Du bekommst die Zahl, die Frist und den Rechenweg. Deine Angaben bleiben auf deinem Gerät.</p></div>
+    <div class="wiz reveal" id="wiz">
+      <div class="wiz-top"><button class="wback" id="wBack" type="button" hidden>← Zurück</button><div class="wprog" aria-hidden="true"><i id="wBar"></i></div><span class="wstep" id="wStep"></span></div>
+      <div class="wiz-body" id="wBody"></div>
+    </div>
+    <details class="how reveal"><summary>So rechnen wir</summary>
+      <div class="how-in">
+        <p><b>Referenzzins:</b> Wir bestimmen den Satz, der bei deinem Mietzins galt (BWO-Verlauf), und zählen die Viertelprozent-Schritte bis heute. Nach gängiger Rechenpraxis (Mieterverband, Schlichtungsbehörden) gilt: Pro Viertelprozent sind es 3 %, die Senkung ist die Umkehrrechnung 1 − 1 / (1 + 3 % × Schritte), also 2,91 %, 5,66 %, 8,26 % und so weiter. Das Gesetz (Art. 13 VMWG) nennt die 3-%-Staffel für Erhöhungen. Bei Senkungen steht dort nur «entsprechend herabzusetzen oder mit Kostensteigerungen zu verrechnen».</p>
+        <p><b>Gegenrechnung:</b> Teuerung zu höchstens 40 % der Indexsteigerung (Art. 269a lit. e OR, Art. 16 VMWG), hier vereinfacht mit den Jahresmitteln des Landesindex. Massgebend wäre der Indexstand im Monat vor der Ankündigung. Dazu eine Kostenpauschale pro Jahr: Es gibt keinen amtlichen Richtwert. Zürcher Schlichtungsbehörden rechnen laut ihrer Website aktuell mit etwa 0,25 % des Nettomietzinses pro Jahr, ältere Praxis nennt 0,5 bis 1 %, der Mieterverband bestreitet Pauschalen. Der Vermieter kann weitere Argumente bringen, etwa Quartierüblichkeit oder Rendite.</p>
+        <p><b>Anfangsmiete:</b> Das Gesetz nennt keine Prozentzahl. Das Bundesgericht verwendet etwa 10 % als Richtwert für «erheblich». Die Vermutung, dass der Mietzins missbräuchlich ist, greift erst bei einer deutlich höheren Erhöhung, die sich nicht durch Referenzzins oder Teuerung erklären lässt (BGE 147 III 431). Die Gerichte entscheiden im Einzelfall.</p>
+        <p><b>Stand:</b> Rechtsgrundlagen und Zahlen vom <span class="js-stand">18.11.2026</span>. Alle Werte sind Schätzungen und keine Rechtsberatung. Bei wichtigen Schritten hilft der Mieterverband oder ein Anwalt.</p>
+      </div>
+    </details>
+    <p class="trust" id="quellen">Grundlagen: BWO Referenzzins · Obligationenrecht · VMWG · Miet-Barometer 2026 · ZKB · BFS</p>
+  </div>
+</section>
+
+<!-- ===================== WARUM ===================== -->
+<section class="loss" id="problem">
+  <div class="wrap">
+    <div class="sec-head reveal"><h2>Viele hätten Anspruch. <em>Wenige fragen nach.</em></h2><p>Eine Senkung gilt nicht automatisch. Du musst sie schriftlich verlangen.</p></div>
+    <div class="stats">
+      <div class="stat reveal"><div class="n"><span>40–46</span><span> %</span></div><p>der Mieterhaushalte konnten nach den Senkungen von 2025 eine tiefere Miete verlangen.</p><small>Modellrechnung der <a href="https://www.zkb.ch/de/blog/immobilien/erleichterung-bei-den-altbestandesmieten.html" rel="noopener">ZKB</a>, kein amtlicher Wert.</small></div>
+      <div class="stat reveal" style="transition-delay:.08s"><div class="n"><span>ca. </span><span data-count="12">12</span><span> %</span></div><p>haben die zweite Senkung tatsächlich verlangt.</p><small>Stand April 2026 laut <a href="https://www.srf.ch/news/schweiz/neue-studie-der-zkb-nur-wenige-mietende-nutzten-tieferen-referenzzinssatz" rel="noopener">ZKB via SRF</a>.</small></div>
+      <div class="stat reveal" style="transition-delay:.16s"><div class="n"><span data-count="5">5</span><span> %</span></div><p>haben je ihre Anfangsmiete angefochten.</p><small><a href="https://www.mieterverband.ch/upd_fm_media/mvs/26_03_31_mm_medienkonferenz-miet-barometer_de.pdf" rel="noopener">Miet-Barometer 2026</a>, Umfrage, nicht repräsentativ.</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STORY ===================== -->
+<section class="story" id="story" aria-label="So funktioniert Mietklar">
+  <div class="story-sticky" id="storySticky">
+    <canvas id="storyCanvas" aria-hidden="true"></canvas>
+    <div class="caps">
+      <div class="cap on" data-i="0"><div class="step">01 · Das Gesetz</div><h3>Ein Land. <em>26 Kantone.</em> Eigene Fristen.</h3><p>Das Mietrecht ist Bundesrecht. Formulare, Behörden und Verfahren sind kantonal.</p></div>
+      <div class="cap" data-i="1"><div class="step">02 · Der Zins</div><h3>Der Referenzzins <em>ist gesunken.</em></h3><p>Er ist der Zinssatz, an den deine Miete gekoppelt ist. Sinkt er, darfst du eine tiefere Miete verlangen.</p></div>
+      <div class="cap" data-i="2"><div class="step">03 · Der Abgleich</div><h3>Mietklar legt alles <em>übereinander.</em></h3><p>Referenzzins, Teuerung, Termine. Du gibst drei Angaben ein, wir rechnen offen.</p></div>
+      <div class="cap" data-i="3"><div class="step">04 · Dein Weg</div><h3>Du siehst, ob es <em>sich lohnt.</em></h3>
+        <div class="plan"><div class="row"><span>Netto-Miete</span><b>CHF 2’100</b></div><div class="row"><span>Senkung (2 Schritte)</span><b>– CHF 119</b></div><div class="row total"><span>Nach Gegenrechnung</span><b>ca. – CHF 92</b></div><p class="note">Rechenbeispiel mit Mietzins seit Januar 2024, keine Zusage.</p></div></div>
+    </div>
+    <div class="dots" id="storyDots"><i class="on"></i><i></i><i></i><i></i></div>
+    <div class="scrollhint" id="hint">Scrollen</div>
+  </div>
+</section>
+
+<!-- ===================== EINWÄNDE ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal"><h2>Was dich bisher <em>abgehalten hat.</em></h2></div>
+    <div class="pains">
+      <article class="pain reveal"><q>Ich will keinen Streit mit der Verwaltung.</q><div class="fix"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><p><b>Sachlicher Brief.</b> Eine Kündigung als Reaktion auf dein Begehren ist anfechtbar. Bei Ärger hilft der Mieterverband.</p></div></article>
+      <article class="pain reveal" style="transition-delay:.08s"><q>Ich weiss nicht, bis wann.</q><div class="fix"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><p><b>Datum statt Rätselraten.</b> Du siehst, bis wann dein Brief ankommen muss, und legst es in den Kalender.</p></div></article>
+      <article class="pain reveal" style="transition-delay:.16s"><q>Ich gebe meine Daten nicht gern her.</q><div class="fix"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><p><b>Alles auf deinem Gerät.</b> Rechnung und PDF entstehen im Browser. Miete und Adresse gehen nicht an uns.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ZEITMASCHINE ===================== -->
+<section id="zins">
+  <div class="wrap">
+    <div class="sec-head reveal"><h2>Der Referenzzins <em>seit 2008.</em></h2><p>Zieh auf das Datum, seit dem deine Miete gilt. Senkungen wirken erst auf den nächsten Kündigungstermin.</p></div>
+    <div class="chart reveal" id="chartBox">
+      <svg id="chart" viewBox="0 0 1000 380" role="img" aria-label="Verlauf des hypothekarischen Referenzzinssatzes von 2008 bis heute, von 3,5 Prozent auf 1,25 Prozent"></svg>
+      <div class="tm">
+        <label for="tmRange">Mein Mietzins gilt seit: <b id="tmDate"></b></label>
+        <input id="tmRange" type="range" min="0" max="100" step="1" value="60" aria-describedby="tmOut">
+        <p class="tm-out" id="tmOut"></p>
+      </div>
+      <p class="chart-note">Quelle: BWO. Heute <span class="js-cur">1,25 %</span>, nächste Publikation am <span class="js-next">1.12.2026</span>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KANTONSKARTE ===================== -->
+<section id="kantone">
+  <div class="wrap">
+    <div class="sec-head reveal"><h2>Neu eingezogen? <em>Schau aufs Formular.</em></h2><p>In vielen Kantonen steht der Mietzins deiner Vormieterin auf einem amtlichen Formular. Tippe deinen Kanton an. Die Anfechtung ist nur in den ersten 30 Tagen möglich.</p></div>
+    <div class="kmap reveal">
+      <div class="kgrid" id="kgrid" role="group" aria-label="Kantonskarte, Kacheln pro Kanton"></div>
+      <div class="kinfo" id="kinfo" aria-live="polite"></div>
+    </div>
+    <div class="klegend reveal"><span><i class="k-full"></i>Formularpflicht</span><span><i class="k-part"></i>Teilweise</span><span><i class="k-none"></i>Keine laut BWO-Verzeichnis</span></div>
+    <p class="fine reveal">Quelle: <a href="https://www.bwo.admin.ch/dam/de/sd-web/lp4WEVqxdXWN/2026-02-03_D_Verzeichnis%20Formularpflicht%20Anfangsmietzins_Kantonale%20Gesetze%20und%20Leerwohnungsziffer_.pdf" rel="noopener">BWO-Verzeichnis Formularpflicht</a> (9/2026). Kann sich jeweils per 1. November ändern.</p>
+  </div>
+</section>
+
+<!-- ===================== VERGLEICH ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal"><h2>Allein, mit Mietklar oder <em>mit dem Verband?</em></h2><p>Wir ersetzen den Mieterverband nicht. Bei Streit ist er die richtige Adresse.</p></div>
+    <div class="cmp reveal" role="table" aria-label="Vergleich">
+      <div class="cr ch" role="row"><div role="columnheader"></div><div role="columnheader">Allein</div><div role="columnheader" class="me">Mietklar</div><div role="columnheader">Mieterverband</div></div>
+      <div class="cr" role="row"><div role="rowheader">Zeit bis zur Zahl</div><div role="cell" data-l="Allein">Recherche, oft Stunden</div><div role="cell" data-l="Mietklar" class="me">Etwa eine Minute</div><div role="cell" data-l="Mieterverband">Je nach Sektion</div></div>
+      <div class="cr" role="row"><div role="rowheader">Kosten</div><div role="cell" data-l="Allein">0 CHF, dafür dein Aufwand</div><div role="cell" data-l="Mietklar" class="me">Check gratis, Brief-Paket CHF <span class="js-price">39</span> (optional)</div><div role="cell" data-l="Mieterverband">Mitgliederbeitrag</div></div>
+      <div class="cr" role="row"><div role="rowheader">Brief mit deinen Zahlen</div><div role="cell" data-l="Allein">Selbst formulieren</div><div role="cell" data-l="Mietklar" class="me">Ja, zum Selbstversand</div><div role="cell" data-l="Mieterverband">Je nach Angebot</div></div>
+      <div class="cr" role="row"><div role="rowheader">Persönliche Beratung</div><div role="cell" data-l="Allein">Nein</div><div role="cell" data-l="Mietklar" class="me">Nein, wir verweisen weiter</div><div role="cell" data-l="Mieterverband">Ja, für Mitglieder</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PREISE ===================== -->
+<section id="preise">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="tag"><i></i>Preis</span><h2>Prüfen ist gratis. <em>Bezahlt wird nur der Brief.</em></h2><p>Das Brief-Paket bieten wir nur an, wenn dein Check einen klaren Vorteil zeigt.</p></div>
+    <div class="plans" style="grid-template-columns:repeat(auto-fit,minmax(260px,360px));justify-content:center">
+      <div class="tier reveal"><h3>Check</h3><div class="price">0<small>CHF</small></div><p class="for">Lohnt sich der nächste Schritt?</p><ul><li>Referenzzins oder Anfangsmiete prüfen</li><li>Betrag pro Monat und Jahr</li><li>Frist mit Datum und Kalender-Eintrag</li><li>Rechenweg mit Quellen</li></ul><a href="#check" class="btn btn-line" data-track="price_check_cta">Kostenlos prüfen</a></div>
+      <div class="tier best reveal" style="transition-delay:.08s"><span class="ribbon">Optional</span><h3>Brief-Paket</h3><div class="price"><span class="js-price">39</span><small>CHF einmalig</small></div><p class="for">Fertiger Brief mit deinen Zahlen</p><ul><li>Druckfertiger Brief als PDF</li><li>Berechnung mit Quellen</li><li>Checkliste für Versand und Frist</li><li>Erst ansehen, dann entscheiden</li></ul><a href="#check" class="btn" data-track="price_letter_cta">Zuerst prüfen</a></div>
+    </div>
+    <p class="fine reveal js-paynote">Endpreis in CHF. Den Inhalt siehst du vor dem Kauf als Vorschau.</p>
+  </div>
+</section>
+
+<!-- ===================== ZINS-TERMIN ===================== -->
+<section>
+  <div class="wrap">
+    <div class="alarm reveal">
+      <div id="alTxt">
+        <h2>Nächster Referenzzins-Entscheid in <em><span id="alDays">–</span> Tagen.</em></h2>
+        <p>Am <span class="js-next">1.12.2026</span> gibt das BWO den neuen Satz bekannt. Danach lohnt sich ein neuer Check.</p>
+      </div>
+      <div class="al-form"><button class="btn btn-light" type="button" id="alIcs" data-track="alarm_ics">Termin in den Kalender</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EHRLICHKEIT ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal"><h2>Was wir tun. <em>Und was nicht.</em></h2></div>
+    <div class="honest">
+      <div class="yes reveal"><h3>Das bekommst du</h3><ul><li>Jede Zahl mit Quelle und Stand</li><li>Ein ehrliches Nein, wenn kein Anspruch besteht</li><li>Einen Brief, den du vorher siehst und selbst versendest</li><li>Berechnung auf deinem Gerät, ohne Drittanbieter</li></ul></div>
+      <div class="reveal" style="transition-delay:.08s"><h3>Das versprechen wir nie</h3><ul><li>Garantierte Beträge oder Erfolge</li><li>Rechtsberatung oder Vertretung</li><li>Versand in deinem Namen</li><li>Dass jeder einen Anspruch hat</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="tag"><i></i>Fragen</span><h2>Kurz <em>beantwortet.</em></h2></div>
+    <div class="faq reveal">
+{{FAQ_HTML}}
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===================== FINALE ===================== -->
+<div class="final" id="finale">
+  <div class="sky"><i class="orb o1"></i><i class="orb o3"></i></div><div class="grain"></div>
+  <h2 class="reveal">Zu viel Miete? Prüf es <em>jetzt.</em></h2>
+  <p class="reveal">Kostenlos. Ohne Konto. Mit ehrlichem Ergebnis.</p>
+  <div class="cta-row reveal" style="justify-content:center;margin-top:34px"><a href="#check" class="btn btn-light" data-magnet data-track="final_cta">Mietzins kostenlos prüfen</a></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a href="#top" class="logo" aria-label="Mietklar"><svg class="mk" viewBox="0 0 160 160" aria-hidden="true"><use href="#mark"/></svg><span class="wdt">Mietklar</span></a>
+    <span>© 2026 Mietklar. Unabhängiger Service, keine Anwaltskanzlei, keine Rechtsberatung. Stand: <span class="js-stand">18.11.2026</span>.</span>
+    <nav aria-label="Rechtliches"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="bedingungen.html">Bedingungen</a></nav>
+  </div>
+</footer>
+
+<!-- Dialog: Bezahlung nicht verfügbar (ohne Zahlungsserver) -->
+<dialog id="fd" aria-labelledby="fdT">
+  <form method="dialog">
+    <h3 id="fdT">Bezahlung hier nicht verfügbar</h3>
+    <p>Diese Version der Seite läuft ohne Zahlungsserver. Es wird nichts bezahlt und nichts gesendet. Die Vorschau bleibt für dich sichtbar.</p>
+    <div class="fd-row"><button class="btn btn-dark" value="ok">Verstanden</button></div>
+  </form>
+</dialog>

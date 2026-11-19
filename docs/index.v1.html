@@ -1,0 +1,1136 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mietklar. Zahlst du zu viel Miete?</title>
+<meta name="description" content="Mietklar prüft in Sekunden, ob du die Anfangsmiete anfechten oder bei sinkendem Referenzzins eine Senkung verlangen kannst. Mit gesetzlicher Frist, offenem Rechenweg und Briefvorlage. Ohne Konto, im Browser gerechnet.">
+<meta name="theme-color" content="#0C242B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' rx='45' fill='%230F2B33'/%3E%3Cpath d='M80 40 L119 71 V117 H41 V71 Z' fill='%23FAF8F4' stroke='%23FAF8F4' stroke-width='9' stroke-linejoin='round'/%3E%3Crect x='66' y='84' width='28' height='33' rx='14' fill='%23F0A073'/%3E%3C/svg%3E">
+<style>
+/* ==========================================================
+   Mietklar. Identity: «Alpine Dawn» (ruhig, warm, präzise)
+   Palette: Fjord (Tiefe) · Seeglas (Vertrauen) · Aprikose (Wärme) · Papier (Ruhe)
+   Bewegung: langsame Ease-Kurven, nie linear, nie hektisch
+   ========================================================== */
+:root{
+  --noise:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  --night:#0A2027; --fjord:#0F2B33; --deep:#173F49; --lake:#2D7A80; --glass:#8CC4BD; --glass-soft:#DCEEEB;
+  --apricot:#F0A073; --apricot-soft:#FBE4D5;
+  --paper:#F5F2EC; --cloud:#FBF9F5; --card:#FFFFFF;
+  --ink:#0F2226; --ink-2:#51625F; --ink-3:#8A9794; --line:rgba(15,43,51,.09);
+  --ok:#3F9A73;
+  --ease:cubic-bezier(.22,1,.36,1); --ease-io:cubic-bezier(.65,0,.35,1); --spring:cubic-bezier(.34,1.4,.64,1);
+  --r-xl:36px; --r-lg:28px; --r-md:20px; --r-sm:14px;
+  --sh-1:0 1px 2px rgba(15,43,51,.05),0 12px 32px -14px rgba(15,43,51,.16);
+  --sh-2:0 2px 6px rgba(15,43,51,.06),0 40px 80px -30px rgba(15,43,51,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:"Instrument Sans",system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{letter-spacing:-.04em;line-height:1.02;font-weight:600}
+em{font-style:normal;font-weight:inherit;letter-spacing:inherit;color:var(--lake)}
+.hero em,.story em,.final em{color:var(--apricot)}
+a{color:inherit;text-decoration:none} button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+svg{display:block}
+.wrap{width:min(1200px,100% - 40px);margin-inline:auto}
+:focus-visible{outline:2.5px solid var(--apricot);outline-offset:3px;border-radius:12px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.02em;padding:7px 14px;border-radius:999px;background:var(--card);box-shadow:var(--sh-1);border:1px solid var(--line)}
+.tag i{width:7px;height:7px;border-radius:50%;background:var(--apricot);display:block}
+
+/* Fortschrittslinie (ruhige Orientierung) */
+.prog{will-change:transform;position:fixed;top:0;left:0;height:2px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--glass),var(--apricot));z-index:90}
+
+/* ---------- Buttons (Fitts: gross · Squash beim Drücken) ---------- */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:58px;padding:0 30px;border-radius:999px;font-weight:600;font-size:17px;white-space:nowrap;transition:transform .18s var(--ease),background .25s,box-shadow .4s var(--ease),color .25s;will-change:transform}
+.btn:active{transform:scale(.95,.92)!important}
+.btn-light{background:#fff;color:var(--ink);box-shadow:0 14px 34px -12px rgba(0,0,0,.45)}
+.btn-light:hover{box-shadow:0 22px 44px -14px rgba(0,0,0,.55)}
+.btn-glass{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.btn-glass:hover{background:rgba(255,255,255,.18)}
+.btn-dark{background:var(--fjord);color:#fff;box-shadow:0 14px 30px -14px rgba(15,43,51,.7)}
+.btn-dark:hover{background:var(--night)}
+.btn-line{border:1.5px solid var(--ink);height:50px;padding:0 24px}
+.btn-line:hover{background:rgba(15,34,38,.05)}
+.btn .arr{transition:transform .5s var(--ease)}
+.btn:hover .arr{transform:translate(3px,-3px)}
+
+/* ---------- Navigation (schwebende Pille) ---------- */
+.pill.hide{transform:translate(-50%,-140%)!important}
+.pill{will-change:transform;position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:6px;padding:8px 8px 8px 16px;border-radius:999px;background:rgba(251,249,245,.82);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);box-shadow:0 14px 40px -18px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.6);transition:transform .6s var(--ease),opacity .6s;width:min(920px,100% - 28px)}
+.logo{display:flex;align-items:center;gap:10px;color:var(--fjord)}
+.logo .mk{width:34px;height:34px}.logo .wd{height:21px;width:auto}
+.pill nav{display:flex;gap:2px;margin-left:auto;margin-right:10px}
+.pill nav a{padding:11px 16px;border-radius:999px;font-size:15px;font-weight:500;color:var(--ink-2);transition:background .25s,color .25s}
+.pill nav a:hover{background:rgba(15,43,51,.06);color:var(--ink)}
+.pill .btn{height:46px;padding:0 22px;font-size:15px}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;min-height:calc(800px + clamp(560px,54vw,720px));background:var(--noise),linear-gradient(180deg,#0A2027 0%,#0F2B33 34%,#17454F 62%,#2D7A80 86%,#4C9A98 100%);color:#fff;overflow:hidden;isolation:isolate}
+.sky{position:absolute;inset:0;z-index:-2;overflow:hidden}
+.orb{position:absolute;border-radius:50%;will-change:transform;backface-visibility:hidden;contain:strict}
+.sky.paused .orb,.scrolling .orb{animation-play-state:paused}
+.orb.o1{width:48vw;height:48vw;left:-12vw;top:10%;background:radial-gradient(closest-side,rgba(45,122,128,.8),rgba(45,122,128,.35) 55%,rgba(45,122,128,0));animation:drift 22s ease-in-out infinite alternate}
+.orb.o2{width:40vw;height:40vw;right:-10vw;top:22%;background:radial-gradient(closest-side,rgba(140,196,189,.4),rgba(140,196,189,.16) 55%,rgba(140,196,189,0));animation:drift 28s ease-in-out infinite alternate-reverse}
+.orb.o3{width:60vw;height:34vw;left:20vw;bottom:-14%;background:radial-gradient(closest-side,rgba(240,160,115,.55),rgba(240,160,115,.2) 55%,rgba(240,160,115,0));animation:drift 26s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate3d(-3vw,0,0) scale(1)}to{transform:translate3d(4vw,-3vh,0) scale(1.12)}}
+.glow{position:absolute;left:0;top:0;width:720px;height:720px;margin:-360px 0 0 -360px;z-index:-1;pointer-events:none;background:radial-gradient(closest-side,rgba(255,255,255,.1),rgba(255,255,255,0));will-change:transform}
+.grain{display:none}
+.hero-in{position:relative;z-index:3;text-align:center;padding:168px 0 0;display:flex;flex-direction:column;align-items:center}
+.eyebrow-pill{display:inline-flex;align-items:center;gap:10px;padding:6px 18px 6px 6px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:15px;font-weight:500;color:rgba(255,255,255,.92)}
+.eyebrow-pill b{background:var(--night);color:#fff;border-radius:999px;padding:6px 12px;font-size:14px}
+.hero h1{margin-top:28px;font-size:clamp(46px,7.6vw,108px);max-width:14ch}
+.hero h1 .ln{display:block}
+.sub{margin-top:26px;max-width:640px;font-size:clamp(17px,1.6vw,21px);color:rgba(255,255,255,.82)}
+.cta-row{margin-top:36px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.micro{margin-top:18px;font-size:14px;color:rgba(255,255,255,.6)}
+/* ---------- Hero-Szene: Alpen-Schichten + Plan-Vorschau ---------- */
+.scene{position:absolute;left:0;right:0;bottom:0;height:clamp(560px,54vw,720px);z-index:1;pointer-events:none;overflow:hidden}
+.scene .ridges{position:absolute;inset:0}
+.ridge{position:absolute;left:-3%;bottom:-1px;width:106%;height:80%;will-change:transform}
+.sun{position:absolute;left:63%;bottom:38%;width:clamp(120px,14vw,200px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 38% 38%,#FFE3CF,#F0A073 62%,#E5895A);will-change:transform}
+.sun::after{content:"";position:absolute;inset:-95%;border-radius:50%;background:radial-gradient(closest-side,rgba(240,160,115,.5),rgba(240,160,115,.18) 55%,rgba(240,160,115,0));z-index:-1}
+.preview{position:absolute;left:50%;bottom:clamp(64px,9vw,112px);transform:translateX(-50%);width:min(760px,calc(100% - 40px));padding:26px 30px 24px;border-radius:var(--r-lg);background:var(--cloud);color:var(--ink);box-shadow:var(--sh-2);pointer-events:auto;z-index:3}
+.pv-head{display:flex;align-items:center;gap:12px}
+.pv-head .mk{width:30px;height:30px}
+.pv-head b{font-size:18px;letter-spacing:-.02em}
+.pv-head small{margin-left:auto;font-size:13px;color:var(--ink-3);font-weight:500}
+.pv-rows{margin-top:20px;display:grid;gap:13px}
+.pv-row{display:grid;grid-template-columns:196px 1fr 118px;gap:18px;align-items:center;font-size:15.5px;color:var(--ink-2)}
+.pv-row b{text-align:right;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.pv-bar{height:10px;border-radius:999px;background:var(--glass-soft);overflow:hidden}
+.pv-bar i{display:block;height:100%;width:0;border-radius:inherit;background:var(--lake);transition:width 1.8s var(--ease)}
+.loaded .pv-bar i{width:var(--w)}
+.pv-row:nth-child(2) .pv-bar i{transition-delay:.35s}.pv-row:nth-child(3) .pv-bar i{transition-delay:.6s}.pv-row:nth-child(4) .pv-bar i{transition-delay:.95s}
+.pv-row.minus .pv-bar i{background:var(--glass)}
+.pv-row.total{margin-top:4px;padding-top:16px;border-top:1px solid var(--line);font-size:17px;color:var(--ink)}
+.pv-row.total .pv-bar i{background:var(--apricot)}
+.pv-row.total b{font-size:22px;letter-spacing:-.02em}
+.pv-foot{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.pv-foot span{padding:7px 13px;border-radius:999px;background:var(--paper);border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--ink-2)}
+.pv-foot .warn{background:var(--apricot-soft);border-color:transparent;color:#8F4A25}
+@media (max-width:700px){
+  .scene{position:relative;height:auto;margin-top:44px;padding:56px 0 100px}
+  .preview{position:relative;left:auto;bottom:auto;transform:none;margin:0 auto;padding:20px 18px 18px}
+  .ridge{height:62%}
+  .sun{bottom:44%;left:58%}
+  .pv-row{grid-template-columns:1fr auto;gap:7px 12px;font-size:15px}
+  .pv-row .pv-bar{grid-column:1/-1;order:3}
+  .pv-head small{display:none}
+}
+
+/* ---------- Abschnitte ---------- */
+section{padding:clamp(84px,11vw,150px) 0}
+.sec-head{max-width:860px}
+.sec-head h2{font-size:clamp(38px,5.6vw,76px);margin-top:18px}
+.sec-head p{margin-top:20px;font-size:19px;color:var(--ink-2);max-width:600px}
+.reveal{opacity:0;transform:translateY(28px);filter:blur(10px);transition:opacity 1s var(--ease),transform 1s var(--ease),filter 1s var(--ease)}
+.reveal.in{opacity:1;transform:none;filter:none}
+.word{display:inline-block;opacity:0;filter:blur(12px);transform:translateY(.35em);transition:opacity .9s var(--ease),filter .9s var(--ease),transform .9s var(--ease)}
+.in .word{opacity:1;filter:none;transform:none}
+.wc{will-change:opacity,transform,filter}.wc .word{will-change:opacity,transform,filter}
+
+/* Themen-Chips */
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:22px}
+.chips span{padding:10px 18px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:600;font-size:15px;color:var(--ink-2);box-shadow:var(--sh-1)}
+.statement{padding:clamp(70px,9vw,120px) 0 20px;text-align:center}
+.statement h2{font-size:clamp(36px,5.2vw,72px);max-width:17ch;margin:0 auto}
+.statement .small{margin-top:24px;color:var(--ink-3);font-size:16px}
+
+/* ---------- Scroll-Story: Globus zoomt in die Schweiz ---------- */
+.story{position:relative;height:460vh;background:var(--night);color:#fff;padding:0}
+.story-sticky{position:sticky;top:0;height:100vh;overflow:hidden}
+.story canvas{position:absolute;inset:0;width:100%;height:100%;transform:translateZ(0)}
+.cap{will-change:opacity,transform,filter}
+.story::before{content:"";position:absolute;inset:0;background:radial-gradient(80% 60% at 70% 40%,#16414B 0%,#0A2027 70%);z-index:0}
+.story-sticky::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(10,32,39,.78) 0%,rgba(10,32,39,0) 52%)}
+.caps{position:absolute;left:max(20px,calc(50% - 600px));bottom:12vh;width:min(470px,calc(100% - 40px));z-index:3}
+.cap{position:absolute;left:0;bottom:0;width:100%;opacity:0;transform:translateY(24px);filter:blur(8px);pointer-events:none;transition:opacity .8s var(--ease),transform .8s var(--ease),filter .8s var(--ease)}
+.cap.on{opacity:1;transform:none;filter:none;pointer-events:auto}
+.cap .step{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--glass)}
+.cap h3{font-size:clamp(34px,4.4vw,58px);margin-top:12px}
+.cap p{margin-top:14px;font-size:18px;color:rgba(255,255,255,.72)}
+.plan{margin-top:18px;padding:20px;border-radius:var(--r-md);background:rgba(24,62,72,.82);border:1px solid rgba(255,255,255,.18)}
+.plan .row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:16px;font-variant-numeric:tabular-nums}
+.plan .row:last-of-type{border:0}
+.plan .row b{font-weight:600}
+.plan .row.minus b{color:var(--glass)}
+.plan .row.total{margin-top:6px;padding-top:14px;border-top:1px solid rgba(255,255,255,.3);border-bottom:0;font-size:19px}
+.plan .row.total b{color:var(--apricot);font-size:24px;letter-spacing:-.02em}
+.plan .note{margin-top:10px;font-size:13px;color:rgba(255,255,255,.55)}
+.dots{position:absolute;right:max(20px,calc(50% - 600px));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:3}
+.dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.28);transition:height .5s var(--ease),background .4s;display:block}
+.dots i.on{height:30px;border-radius:8px;background:var(--apricot)}
+.scrollhint{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);font-size:13px;color:rgba(255,255,255,.5);letter-spacing:.06em;z-index:3;transition:opacity .5s}
+
+/* ---------- Schmerzpunkte ---------- */
+.pains{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:60px;perspective:1200px}
+.pain{position:relative;padding:30px 28px 32px;border-radius:var(--r-lg);background:var(--card);box-shadow:var(--sh-1);border:1px solid var(--line);transform-style:preserve-3d;transition:transform .6s var(--ease),box-shadow .6s var(--ease),opacity .4s}
+.pains:hover .pain{opacity:.6}
+.pains .pain:hover{opacity:1;box-shadow:var(--sh-2)}
+.pain q{display:block;padding-right:30px;quotes:none;font-size:23px;font-weight:600;letter-spacing:-.03em;line-height:1.15;color:var(--ink)}
+.pain .fix{margin-top:20px;padding-top:18px;border-top:1px dashed var(--line);display:flex;gap:12px}
+.pain .fix svg{flex:none;width:22px;height:22px;margin-top:2px;color:var(--ok)}
+.pain .fix p{font-size:16px;color:var(--ink-2)}
+.pain .fix b{color:var(--ink)}
+.pain .num{position:absolute;top:26px;right:26px;font-size:15px;font-weight:600;color:var(--lake);opacity:.7}
+
+/* ---------- Check-Demo ---------- */
+.demo{display:grid;grid-template-columns:.95fr 1.05fr;gap:56px;align-items:start;margin-top:56px}
+.opts{display:grid;gap:12px}
+.opt{display:flex;align-items:center;gap:16px;text-align:left;padding:20px 22px;border-radius:var(--r-md);background:var(--card);border:1.5px solid var(--line);box-shadow:var(--sh-1);transition:transform .35s var(--ease),border-color .3s,background .3s,box-shadow .4s}
+.opt:hover{transform:translateX(6px)}
+.opt:active{transform:scale(.98)}
+.opt .ic{flex:none;width:48px;height:48px;border-radius:15px;background:var(--glass-soft);color:var(--lake);display:grid;place-items:center;transition:background .3s,color .3s}
+.opt b{display:block;font-size:19px;letter-spacing:-.02em}
+.opt span{font-size:14px;color:var(--ink-3)}
+.opt[aria-pressed=true]{border-color:var(--lake);background:#fff;box-shadow:0 0 0 4px rgba(45,122,128,.12),var(--sh-1)}
+.opt[aria-pressed=true] .ic{background:var(--lake);color:#fff}
+.result{position:relative;padding:30px;border-radius:var(--r-lg);background:linear-gradient(165deg,#fff,#F0F6F4);box-shadow:var(--sh-2);border:1px solid var(--line);min-height:480px}
+.result h3{font-size:26px;letter-spacing:-.03em}
+.result .lead{margin-top:6px;color:var(--ink-3);font-size:15px}
+.paths{margin-top:22px;display:grid;gap:10px}
+.path{display:flex;gap:14px;padding:16px;border-radius:var(--r-sm);background:var(--paper);border:1px solid var(--line);opacity:0;transform:translateY(12px)}
+.path.in{opacity:1;transform:none;transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.path .badge{flex:none;height:28px;padding:0 11px;border-radius:999px;background:var(--fjord);color:#fff;font-size:12px;font-weight:600;display:grid;place-items:center;margin-top:2px}
+.path b{display:block;font-size:17px;letter-spacing:-.02em}
+.path p{font-size:14.5px;color:var(--ink-2);margin-top:3px}
+.result .foot{margin-top:18px;font-size:13px;color:var(--ink-3)}
+.result .btn{margin-top:20px;width:100%}
+
+/* ---------- Zeitleiste: Wann kommt was? ---------- */
+.timeline{position:relative;margin-top:64px;padding:40px 36px 36px;border-radius:var(--r-xl);background:var(--fjord);color:#fff;overflow:hidden;box-shadow:var(--sh-2)}
+.timeline::before{content:"";position:absolute;width:60%;height:140%;right:-10%;top:-30%;background:radial-gradient(closest-side,rgba(240,160,115,.35),transparent);pointer-events:none}
+.tl-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;position:relative}
+.tl-head h3{font-size:clamp(26px,3vw,38px)}
+.tl-head .money{display:flex;gap:26px}
+.tl-head .money div small{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:600}
+.tl-head .money div b{font-size:30px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.tl-head .money .back b{color:var(--glass)}
+.track{position:relative;margin-top:54px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.track::before{content:"";position:absolute;left:10%;right:10%;top:15px;height:2px;background:rgba(255,255,255,.18);border-radius:2px}
+.track .bar{position:absolute;left:10%;top:15px;height:2px;width:0;background:linear-gradient(90deg,var(--glass),var(--apricot));border-radius:2px;transition:width 2.6s var(--ease-io)}
+.track.in .bar{width:80%}
+.stp{position:relative;text-align:center;padding-top:44px}
+.stp::before{content:"";position:absolute;top:6px;left:50%;width:20px;height:20px;margin-left:-10px;border-radius:50%;background:var(--fjord);border:2px solid rgba(255,255,255,.3);transition:background .5s,border-color .5s,transform .6s var(--spring)}
+.track.in .stp::before{background:var(--apricot);border-color:var(--apricot);transform:scale(1.15)}
+.track.in .stp:nth-child(1)::before{transition-delay:.1s}.track.in .stp:nth-child(2)::before{transition-delay:.7s}.track.in .stp:nth-child(3)::before{transition-delay:1.3s}.track.in .stp:nth-child(4)::before{transition-delay:1.9s}.track.in .stp:nth-child(5)::before{transition-delay:2.5s}
+.stp b{display:block;font-size:17px;letter-spacing:-.02em}
+.stp span{display:block;margin-top:4px;font-size:14px;color:rgba(255,255,255,.6)}
+.stp.warn b{color:var(--apricot)}
+
+/* ---------- Zahlen ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
+.stat{padding:34px 30px;border-radius:var(--r-lg);background:var(--card);box-shadow:var(--sh-1);border:1px solid var(--line)}
+.stat .n{font-size:clamp(46px,5.4vw,76px);font-weight:600;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.stat .n sup{font-size:.4em;letter-spacing:0;color:var(--ink-3);vertical-align:top;margin-left:4px;font-weight:500}
+.stat p{margin-top:14px;font-size:17px;color:var(--ink-2)}
+.stat small{display:block;margin-top:14px;font-size:13px;color:var(--ink-3)}
+
+/* ---------- Preise ---------- */
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px;align-items:stretch}
+.tier{padding:34px 30px;border-radius:var(--r-lg);background:var(--card);box-shadow:var(--sh-1);border:1px solid var(--line);display:flex;flex-direction:column}
+.tier.best{background:var(--fjord);color:#fff;transform:translateY(-14px);box-shadow:var(--sh-2);border-color:transparent}
+.tier h3{font-size:20px;letter-spacing:-.02em}
+.tier .price{margin-top:16px;font-size:56px;font-weight:600;letter-spacing:-.05em;line-height:1}
+.tier .price small{font-size:17px;font-weight:500;letter-spacing:0;opacity:.6;margin-left:4px}
+.tier .for{margin-top:8px;font-size:15px;opacity:.7}
+.tier ul{list-style:none;display:grid;gap:12px;margin:26px 0 30px;font-size:16px}
+.tier li{display:flex;gap:12px}
+.tier li::before{content:"";flex:none;width:20px;height:20px;margin-top:2px;border-radius:50%;background:var(--glass-soft) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path d='M5.5 10.5l3 3 6-6.5' fill='none' stroke='%232D7A80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") center/contain no-repeat}
+.tier.best li::before{background-color:rgba(255,255,255,.14)}
+.tier .btn{margin-top:auto}
+.tier.best .btn{background:#fff;color:var(--ink)}
+.ribbon{align-self:flex-start;margin-bottom:14px;padding:5px 12px;border-radius:999px;background:var(--apricot);color:var(--night);font-size:12px;font-weight:700}
+.fine{margin-top:22px;color:var(--ink-3);font-size:14px}
+
+/* ---------- Ehrlichkeit ---------- */
+.honest{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:56px}
+.honest div{padding:30px;border-radius:var(--r-lg);border:1px solid var(--line);background:var(--card);box-shadow:var(--sh-1)}
+.honest h3{font-size:22px;letter-spacing:-.02em;display:flex;gap:10px;align-items:center}
+.honest ul{list-style:none;margin-top:16px;display:grid;gap:11px;font-size:16px;color:var(--ink-2)}
+.honest li{display:flex;gap:10px}
+.honest li::before{content:"–";color:var(--ink-3)}
+.honest .yes li::before{content:"✓";color:var(--ok);font-weight:700}
+
+/* ---------- FAQ ---------- */
+.faq{max-width:820px;margin-top:48px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 4px;cursor:pointer;font-weight:600;font-size:21px;letter-spacing:-.025em;min-height:56px}
+.faq summary::-webkit-details-marker{display:none}
+.faq .plus{flex:none;width:38px;height:38px;border-radius:50%;background:#fff;box-shadow:var(--sh-1);display:grid;place-items:center;transition:transform .5s var(--ease),background .3s}
+.faq details[open] .plus{transform:rotate(135deg);background:var(--apricot-soft)}
+.faq .ans{padding:0 4px 28px;color:var(--ink-2);font-size:17px;max-width:680px}
+
+/* ---------- Finale ---------- */
+.final{position:relative;margin:0 14px 14px;border-radius:var(--r-xl);overflow:hidden;color:#fff;background:var(--noise),linear-gradient(180deg,#0A2027,#17454F 70%,#2D7A80);text-align:center;padding:clamp(80px,11vw,150px) 20px;isolation:isolate}
+.final .sky{z-index:-2}
+.final .orb.o3{opacity:.8}
+.final h2{font-size:clamp(42px,7vw,100px);max-width:13ch;margin:0 auto}
+.final p{margin:22px auto 0;max-width:520px;font-size:19px;color:rgba(255,255,255,.78)}
+.wl{display:flex;gap:8px;max-width:540px;margin:38px auto 0;padding:7px;border-radius:999px;background:#fff;box-shadow:0 30px 60px -24px rgba(0,0,0,.6)}
+.wl input{flex:1;min-width:0;height:56px;padding:0 24px;border:0;background:none;font:inherit;font-size:17px;color:var(--ink);border-radius:999px}
+.wl input:focus{outline:none}
+.wl.err{animation:shake .45s var(--ease);box-shadow:0 0 0 3px var(--apricot),0 30px 60px -24px rgba(0,0,0,.6)}
+@keyframes shake{0%,100%{transform:none}20%{transform:translateX(-10px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(3px)}}
+.wl-msg{min-height:26px;margin-top:16px;font-size:16px;font-weight:500}
+.wl-msg.bad{color:var(--apricot)}.wl-msg.good{color:var(--glass)}
+.btn.sent{background:var(--ok);color:#fff}
+.spark{position:absolute;width:6px;height:6px;border-radius:2px;pointer-events:none;z-index:6}
+footer{padding:46px 0 60px;color:var(--ink-3);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+footer .logo{color:var(--fjord)}
+footer nav{display:flex;gap:4px}footer nav a{padding:10px 12px;border-radius:10px}footer nav a:hover{background:#fff;color:var(--ink)}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1000px){
+  .pill nav{display:none}.pill{justify-content:space-between}
+  .pains,.stats,.plans,.honest{grid-template-columns:1fr}
+  .tier.best{transform:none}
+  .demo{grid-template-columns:1fr;gap:32px}
+  .track{grid-template-columns:1fr;gap:6px;margin-top:34px}
+  .track::before,.track .bar{left:9px;right:auto;top:6px;bottom:20px;width:2px;height:auto}
+  .track .bar{width:2px;height:0;transition:height 2.6s var(--ease-io)}
+  .track.in .bar{height:calc(100% - 26px);width:2px}
+  .stp{text-align:left;padding:0 0 18px 40px}
+  .stp::before{left:0;margin-left:0;top:3px}
+  .dots{display:none}
+}
+@media (max-width:600px){
+  .pill{top:10px;padding-left:12px}.pill .btn{height:42px;padding:0 16px;font-size:14px}
+  .logo .wd{height:18px}.logo .mk{width:30px;height:30px}
+  .hero{min-height:0}
+  .hero-in{padding-top:118px}
+  .cta-row .btn{height:54px;padding:0 24px;font-size:16px}
+  .wl{flex-direction:column;border-radius:28px}.wl .btn{width:100%}
+  .caps{bottom:7vh}
+  .cap p{font-size:16px}
+  .timeline{padding:30px 22px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .reveal,.word{opacity:1;filter:none;transform:none}
+}
+
+/* ==========================================================
+   Mietklar: Ergänzungen zur Alpine-Dawn-Basis
+   ========================================================== */
+[hidden]{display:none!important}
+.logo .wdt{font-weight:700;font-size:23px;letter-spacing:-.05em;line-height:1}
+.pv-in{margin-top:18px;display:grid;grid-template-columns:1fr 1.25fr;gap:12px}
+.pv-in label{display:block;font-size:12.5px;font-weight:600;color:var(--ink-3)}
+.pv-in input,.pv-in select{display:block;width:100%;margin-top:6px;height:46px;padding:0 14px;border-radius:14px;border:1.5px solid var(--line);background:#fff;font:inherit;font-size:16px;color:var(--ink);font-variant-numeric:tabular-nums;transition:border-color .25s,box-shadow .25s}
+.pv-in input:focus,.pv-in select:focus{outline:none;border-color:var(--lake);box-shadow:0 0 0 4px rgba(45,122,128,.14)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pv-row.off .pv-bar i{background:var(--apricot)}
+.pv-row.minus b{color:var(--lake)}
+.pv-row.total .pv-bar i{background:var(--ok)}
+.pv-row{grid-template-columns:196px 1fr 138px}
+.pv-row b{white-space:nowrap}
+@media (max-width:700px){.pv-in{grid-template-columns:1fr}.pv-row{grid-template-columns:1fr auto}}
+
+/* Referenzzins-Verlauf */
+.chart{margin-top:52px;padding:28px 24px 22px;border-radius:var(--r-xl);background:var(--card);box-shadow:var(--sh-1);border:1px solid var(--line)}
+.chart svg{width:100%;height:auto;overflow:visible}
+.chart .gl{stroke:rgba(15,43,51,.08);stroke-width:1}
+.chart .gt{fill:var(--ink-3);font-size:13px;font-family:inherit;font-variant-numeric:tabular-nums}
+.chart .ln{fill:none;stroke:var(--lake);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.chart .pt{fill:var(--card);stroke:var(--lake);stroke-width:3}
+.chart .pt.now{fill:var(--apricot);stroke:#fff;stroke-width:3}
+.chart .lb{font-family:inherit;font-size:14px;font-weight:600;fill:var(--ink)}
+.chart-note{margin-top:14px;font-size:13.5px;color:var(--ink-3);max-width:820px}
+
+/* Tabs und Rechner */
+.tabs{display:inline-flex;padding:5px;border-radius:999px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh-1);gap:4px;margin-top:40px}
+.tabs button{padding:13px 24px;border-radius:999px;font-weight:600;font-size:16px;color:var(--ink-2);transition:background .3s var(--ease),color .3s}
+.tabs button[aria-selected=true]{background:var(--fjord);color:#fff}
+.calc{display:grid;grid-template-columns:.95fr 1.05fr;gap:36px;margin-top:28px;align-items:start}
+.form{display:grid;gap:18px;padding:30px;border-radius:var(--r-lg);background:var(--card);box-shadow:var(--sh-1);border:1px solid var(--line)}
+.fld label{display:block;font-size:14px;font-weight:600;color:var(--ink-2);margin-bottom:8px}
+.fld label b{color:var(--ink)}
+.fld input,.fld select{width:100%;height:56px;padding:0 18px;border-radius:16px;border:1.5px solid var(--line);background:var(--cloud);font:inherit;font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums;transition:border-color .25s,box-shadow .25s}
+.fld input:focus,.fld select:focus{outline:none;border-color:var(--lake);box-shadow:0 0 0 4px rgba(45,122,128,.14)}
+.fld input[type=range]{accent-color:var(--lake)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hint{margin-top:8px;font-size:13px;color:var(--ink-3)}
+.out{padding:30px;border-radius:var(--r-lg);background:linear-gradient(165deg,#fff,#F0F6F4);box-shadow:var(--sh-2);border:1px solid var(--line);min-height:430px}
+.out h3{font-size:24px;letter-spacing:-.03em}
+.out .lead{margin-top:6px;color:var(--ink-3);font-size:15px}
+.big{margin-top:18px;font-size:clamp(44px,5.6vw,72px);font-weight:600;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.big small{font-size:.3em;letter-spacing:0;font-weight:500;color:var(--ink-3);margin-left:6px}
+.big.ok{color:var(--lake)}
+.big.no{color:var(--ink-2)}
+.sub2{margin-top:10px;font-size:15.5px;color:var(--ink-2)}
+.paths{margin-top:20px;display:grid;gap:10px}
+.path{display:flex;gap:14px;padding:15px;border-radius:var(--r-sm);background:var(--paper);border:1px solid var(--line);opacity:0;transform:translateY(10px)}
+.path.in{opacity:1;transform:none;transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.path .badge{flex:none;height:28px;padding:0 11px;border-radius:999px;background:var(--fjord);color:#fff;font-size:12px;font-weight:600;display:grid;place-items:center;margin-top:2px;white-space:nowrap}
+.path .badge.warn{background:var(--apricot);color:var(--night)}
+.path .badge.good{background:var(--ok)}
+.path b{display:block;font-size:16.5px;letter-spacing:-.02em}
+.path p{font-size:14.5px;color:var(--ink-2);margin-top:3px}
+.out .foot{margin-top:18px;font-size:13px;color:var(--ink-3)}
+.soon{margin-top:18px;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:var(--apricot-soft);color:#8F4A25;font-size:14px;font-weight:600}
+.ringrow{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.ring{position:relative;width:128px;height:128px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:10;stroke-linecap:round}
+.ring .rb{stroke:var(--glass-soft)}
+.ring .rf{stroke:var(--apricot);transition:stroke-dashoffset 1.2s var(--ease)}
+.ring .rn{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring .rn b{font-size:36px;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.ring .rn span{font-size:12px;color:var(--ink-3);font-weight:600}
+.how{margin-top:26px;max-width:820px}
+.how summary{cursor:pointer;font-weight:600;color:var(--lake);padding:10px 0;list-style:none}
+.how summary::-webkit-details-marker{display:none}
+.how summary::before{content:"+ ";font-weight:700}
+.how[open] summary::before{content:"– "}
+.how-in{display:grid;gap:12px;padding:6px 0 4px;color:var(--ink-2);font-size:15.5px}
+
+/* Checkliste */
+.tbl{margin-top:48px;border-radius:var(--r-lg);overflow:hidden;background:var(--card);box-shadow:var(--sh-1);border:1px solid var(--line);max-width:860px}
+.tr{display:grid;grid-template-columns:1fr 190px;gap:16px;padding:19px 26px;border-bottom:1px solid var(--line);font-size:17px;align-items:center}
+.tr:last-child{border-bottom:0}
+.tr.th{background:var(--fjord);color:#fff;font-weight:600;font-size:14px;letter-spacing:.06em;text-transform:uppercase}
+.tr .y{color:var(--ok);font-weight:600}
+.tr .y::before{content:"✓ "}
+.tr .n{color:var(--ink-2);font-weight:600}
+.tr .n::before{content:"✕ ";color:var(--apricot)}
+@media (max-width:1000px){.calc{grid-template-columns:1fr;gap:24px}}
+@media (max-width:600px){.tr{grid-template-columns:1fr;gap:4px;padding:16px 20px}.tabs button{padding:12px 16px;font-size:15px}.form,.out{padding:22px}}
+
+</style>
+</head>
+<body>
+
+<!-- Logo-Symbol: Haus mit Tür -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mark" viewBox="0 0 160 160"><rect width="160" height="160" rx="44.8" fill="#0F2B33"/><path d="M80 40 L119 71 V117 H41 V71 Z" fill="#FAF8F4" stroke="#FAF8F4" stroke-width="9" stroke-linejoin="round"/><rect x="66" y="84" width="28" height="33" rx="14" fill="#F0A073"/></symbol>
+</svg>
+
+<div class="prog" id="prog"></div>
+
+<div class="pill" id="pill">
+  <a href="#top" class="logo" aria-label="Mietklar Startseite"><svg class="mk" viewBox="0 0 160 160"><use href="#mark"/></svg><span class="wdt">Mietklar</span></a>
+  <nav aria-label="Hauptnavigation"><a href="#problem">Das Problem</a><a href="#check">Dein Check</a><a href="#preise">Preis</a><a href="#faq">Fragen</a></nav>
+  <a href="#check" class="btn btn-dark">Miete prüfen</a>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero" id="top">
+  <div class="sky"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i></div>
+  <div class="glow" id="glow"></div><div class="grain"></div>
+  <div class="hero-in wrap">
+    <a class="eyebrow-pill reveal" href="#problem"><b>Mietzins-Check</b>Mit Rechenweg und Quellen</a>
+    <h1 aria-label="Zahlst du zu viel Miete?"><span class="ln">Zahlst du</span><span class="ln">zu viel</span><span class="ln"><em>Miete?</em></span></h1>
+    <p class="sub reveal">Prüfe in 20 Sekunden, ob du deine Miete senken oder die Anfangsmiete anfechten kannst. Mit gesetzlicher Frist, offenem Rechenweg und fertigem Brief. Du entscheidest, was du abschickst.</p>
+    <div class="cta-row reveal">
+      <a href="#check" class="btn btn-light" data-magnet>Meine Miete prüfen <svg class="arr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+      <a href="#story" class="btn btn-glass"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg> So funktioniert’s</a>
+    </div>
+    <p class="micro reveal">Gratis · ohne Konto · Deine Eingaben bleiben in deinem Browser</p>
+  </div>
+  <div class="scene" id="scene">
+    <i class="sun" id="sun"></i>
+    <div class="ridges" id="ridges" aria-hidden="true"></div>
+    <div class="preview" id="hpv" aria-label="Schnell-Check Referenzzins mit Beispielwerten">
+      <div class="pv-head"><svg class="mk" viewBox="0 0 160 160" aria-hidden="true"><use href="#mark"/></svg><b>Schnell-Check Referenzzins</b><small>Beispielwerte, ändere sie</small></div>
+      <div class="pv-in">
+        <label>Netto-Miete pro Monat (CHF)<input id="hRent" type="number" inputmode="numeric" value="2100" min="0" step="10"></label>
+        <label>Mietzins gilt seit<span class="pair"><select id="hM" aria-label="Monat"></select><select id="hY" aria-label="Jahr"></select></span></label>
+      </div>
+      <div class="pv-rows">
+        <div class="pv-row"><span>Deine Netto-Miete</span><div class="pv-bar"><i id="hB0" style="--w:100%"></i></div><b id="hV0">CHF 2’100</b></div>
+        <div class="pv-row minus"><span>Senkung (Referenzzins)</span><div class="pv-bar"><i id="hB1" style="--w:6%"></i></div><b id="hV1">– 119</b></div>
+        <div class="pv-row off"><span>Gegenrechnung (Schätzung)</span><div class="pv-bar"><i id="hB2" style="--w:2%"></i></div><b id="hV2">+ 44</b></div>
+        <div class="pv-row total"><span>Möglicher Spielraum</span><div class="pv-bar"><i id="hB3" style="--w:4%"></i></div><b id="hV3">CHF 75 / Mt.</b></div>
+      </div>
+      <div class="pv-foot"><span id="hBase">Basis: Referenzzins 1,75 %</span><span>Heute: 1,25 % (seit 2.9.2025)</span><span class="warn" id="hWarn">Richtwert, keine Zusage</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- Aussage -->
+<div class="statement">
+  <div class="wrap">
+    <h2 class="split reveal">Das Recht ist da. Der Weg dorthin ist <em>das Problem.</em></h2>
+    <div class="chips reveal"><span>Anfangsmiete anfechten</span><span>Referenzzins-Senkung</span><span>30-Tage-Uhr</span><span>Fertiger Brief</span></div>
+    <p class="small reveal">Heute prüfen wir zwei Ansprüche: die Anfechtung des Anfangsmietzinses und die Senkung bei sinkendem Referenzzins. Nebenkosten und Mängel folgen später.</p>
+  </div>
+</div>
+
+<!-- ===================== STORY ===================== -->
+<section class="story" id="story" aria-label="So funktioniert Mietklar">
+  <div class="story-sticky" id="storySticky">
+    <canvas id="storyCanvas" aria-hidden="true"></canvas>
+    <div class="caps">
+      <div class="cap on" data-i="0"><div class="step">01 · Das Gesetz</div><h3>Ein Land. <em>26 Kantone.</em> Eigene Fristen.</h3><p>Das Mietrecht ist Bundesrecht. Formulare, Behörden und Verfahren sind aber kantonal. Wer weiss da schon, welche Frist für ihn gilt?</p></div>
+      <div class="cap" data-i="1"><div class="step">02 · Die Zahlen</div><h3>Fast niemand <em>fragt nach.</em></h3><p>Laut Miet-Barometer 2026 des Mieterverbands haben nur 5 % der Befragten je ihren Anfangsmietzins angefochten. Wer es tat, war laut Verband in 75 % der Fälle ganz oder teilweise erfolgreich. Umfrage, nicht repräsentativ, keine Prognose für deinen Fall.</p></div>
+      <div class="cap" data-i="2"><div class="step">03 · Der Abgleich</div><h3>Mietklar legt alles <em>übereinander.</em></h3><p>Vormiete, Referenzzins, Teuerung, Termine. Du gibst zwei, drei Zahlen ein, wir rechnen offen und zeigen den Weg.</p></div>
+      <div class="cap" data-i="3"><div class="step">04 · Dein Weg</div><h3>Du siehst, ob es <em>sich lohnt.</em></h3>
+        <div class="plan"><div class="row"><span>Vormietzins</span><b>CHF 1’800</b></div><div class="row"><span>Neuer Mietzins</span><b>CHF 2’100</b></div><div class="row total"><span>Erhöhung</span><b>+ 16,7 %</b></div><p class="note">Fiktives Rechenbeispiel, keine Zusage. Ob eine Anfechtung Erfolg hat, hängt vom Einzelfall ab. Frist: 30 Tage ab Mietantritt.</p></div></div>
+    </div>
+    <div class="dots" id="storyDots"><i class="on"></i><i></i><i></i><i></i></div>
+    <div class="scrollhint" id="hint">Scrollen · die Schweiz kommt näher</div>
+  </div>
+</section>
+
+<!-- ===================== PAINPOINTS ===================== -->
+<section id="problem">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="tag"><i></i>Kommt dir das bekannt vor?</span>
+      <h2 class="split">Sechs Gründe, warum du bisher <em>nichts getan hast.</em></h2>
+      <p>Es liegt selten am Recht. Es liegt am Drumherum.</p>
+    </div>
+    <div class="pains">
+      <article class="pain reveal"><span class="num">1</span><q>Ich will keinen Streit mit der Verwaltung.</q><div class="fix"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><p><b>Sachlicher Brief.</b> Eine Kündigung als Reaktion auf ein berechtigtes Begehren kann anfechtbar sein. Ausschliessen kann das niemand, deshalb zeigen wir dir Mieterverband und Schlichtungsbehörde.</p></div></article>
+      <article class="pain reveal" style="transition-delay:.08s"><span class="num">2</span><q>Ich weiss nicht, welche Frist läuft.</q><div class="fix"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><p><b>Die 30-Tage-Uhr.</b> Bei der Anfangsmiete zählt der Tag des Mietantritts. Du siehst das Datum und kannst es dir in den Kalender legen.</p></div></article>
+      <article class="pain reveal" style="transition-delay:.16s"><span class="num">3</span><q>Ich weiss nicht, was ich schreiben soll.</q><div class="fix"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><p><b>Brief mit deinen Zahlen.</b> Du prüfst ihn, druckst ihn aus und schickst ihn selbst eingeschrieben ab. Wir versenden nichts in deinem Namen.</p></div></article>
+      <article class="pain reveal"><span class="num">4</span><q>Ich weiss nicht, was die Vormieterin zahlte.</q><div class="fix"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><p><b>Oft steht es im Formular.</b> In ZH, BE, BS, ZG, LU, FR und GE gilt die Formularpflicht (BWO, Stand 9/2026). Sonst kannst du Auskunft verlangen.</p></div></article>
+      <article class="pain reveal" style="transition-delay:.08s"><span class="num">5</span><q>Lohnt sich das überhaupt bei meinem Betrag?</q><div class="fix"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><p><b>Netto statt Brutto.</b> Wir rechnen die Senkung und die Gegenrechnung des Vermieters. Wenn es sich nicht lohnt, sagen wir es dir.</p></div></article>
+      <article class="pain reveal" style="transition-delay:.16s"><span class="num">6</span><q>Ich gebe meine Mietdaten nicht gern her.</q><div class="fix"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><p><b>Alles im Browser.</b> Die Berechnung läuft auf deinem Gerät. Deine Eingaben werden nicht gesendet und nicht gespeichert.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== REFERENZZINS-VERLAUF ===================== -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="tag"><i></i>Der Referenzzins seit 2008</span><h2 class="split">Der Zins fiel. Ging deine Miete <em>mit?</em></h2><p>Senkungen gelten nicht automatisch. Du musst sie verlangen, und sie wirken erst auf den nächsten Kündigungstermin.</p></div>
+    <div class="chart reveal" id="chartBox">
+      <svg id="chart" viewBox="0 0 1000 380" role="img" aria-label="Verlauf des hypothekarischen Referenzzinssatzes von 2008 bis heute, von 3,5 Prozent auf 1,25 Prozent"></svg>
+      <p class="chart-note">Hypothekarischer Referenzzinssatz, Verlauf nach BWO-Veröffentlichungen. Heute 1,25 % seit 2.9.2025, nächste Publikation am 1.12.2026. Anspruch auf Senkung hat nur, wessen Mietzins noch auf einem höheren Satz beruht.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ZAHLEN ===================== -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="tag"><i></i>Was belegt ist</span><h2 class="split">Die Zahlen. <em>Und ihre Grenzen.</em></h2></div>
+    <div class="stats">
+      <div class="stat reveal"><div class="n"><span data-count="5">0</span><span> %</span></div><p>der Befragten haben ihren Anfangsmietzins je angefochten.</p><small>Miet-Barometer 2026, Mieterverband mit Sotomo. 34’441 Befragte, rund 72 % Verbandsmitglieder. Keine Zufallsstichprobe, nicht repräsentativ.</small></div>
+      <div class="stat reveal" style="transition-delay:.08s"><div class="n"><span data-count="75">0</span><span> %</span></div><p>dieser Anfechtungen waren laut Verband ganz oder teilweise erfolgreich.</p><small>Gilt nur für Befragte, die angefochten haben. Wer anficht, hat oft einen guten Fall. Keine Prognose für deinen Fall.</small></div>
+      <div class="stat reveal" style="transition-delay:.16s"><div class="n"><span data-count="30">0</span><span> Tage</span></div><p>Zeit für die Anfechtung, gerechnet ab Mietantritt.</p><small>Art. 270 OR, Schlichtungsbehörde. Quelle: Gerichte Kanton Zürich. Die Frist gilt auch in Kantonen ohne Formularpflicht.</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CHECK ===================== -->
+<section id="check" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="tag"><i></i>Probier’s aus</span><h2 class="split">Was möchtest <em>du prüfen?</em></h2><p>Gib deine Zahlen ein. Du siehst sofort, was möglich ist und was nicht. Nichts wird gesendet oder gespeichert.</p></div>
+
+    <div class="tabs reveal" role="tablist" aria-label="Check wählen">
+      <button role="tab" id="tabA" aria-selected="true" aria-controls="panelA">Anfangsmiete</button>
+      <button role="tab" id="tabR" aria-selected="false" aria-controls="panelR">Referenzzins</button>
+    </div>
+
+    <!-- Anfangsmiete -->
+    <div class="calc" id="panelA" role="tabpanel" aria-labelledby="tabA">
+      <div class="form reveal">
+        <div class="fld"><label for="aCanton">Kanton</label><select id="aCanton"></select></div>
+        <div class="row2">
+          <div class="fld"><label for="aOld">Vormietzins (CHF/Monat)</label><input id="aOld" type="number" inputmode="numeric" min="0" step="10" placeholder="z. B. 1800" value="1800"></div>
+          <div class="fld"><label for="aNew">Neuer Mietzins (CHF/Monat)</label><input id="aNew" type="number" inputmode="numeric" min="0" step="10" placeholder="z. B. 2100" value="2100"></div>
+        </div>
+        <div class="fld"><label for="aDate">Mietantritt (Datum der Übernahme)</label><input id="aDate" type="date"></div>
+        <p class="hint">Die 30 Tage zählen ab Übernahme der Wohnung, nicht ab Vertragsunterschrift. Im Zweifel früher handeln. Information, keine Rechtsberatung.</p>
+      </div>
+      <div class="out reveal" id="aOut" aria-live="polite"></div>
+    </div>
+
+    <!-- Referenzzins -->
+    <div class="calc" id="panelR" role="tabpanel" aria-labelledby="tabR" hidden>
+      <div class="form reveal">
+        <div class="fld"><label for="rRent">Netto-Miete pro Monat (CHF, ohne Nebenkosten)</label><input id="rRent" type="number" inputmode="numeric" min="0" step="10" value="2100"></div>
+        <div class="fld"><label>Seit wann gilt dein Mietzins?</label><div class="row2"><select id="rM" aria-label="Monat"></select><select id="rY" aria-label="Jahr"></select></div><p class="hint">Gemeint ist der Vertragsbeginn oder die letzte Änderung deines Mietzinses.</p></div>
+        <div class="fld"><label for="rKind">Besonderheit</label><select id="rKind"><option value="std">Normaler Mietvertrag</option><option value="gen">Genossenschaft oder gemeinnützig</option><option value="idx">Staffel- oder Indexmiete</option><option value="sub">Subventioniert oder befristet</option></select></div>
+        <div class="fld"><label for="rKos">Kostenpauschale des Vermieters: <b id="rKosV">0,5 % pro Jahr</b></label><input id="rKos" type="range" min="0" max="1.5" step="0.1" value="0.5" style="height:36px;padding:0"><p class="hint">Annahme: Vermieter dürfen allgemeine Kostensteigerungen gegenrechnen. Die Höhe ist Verhandlungssache, 0,5 % ist eine Annahme.</p></div>
+      </div>
+      <div class="out reveal" id="rOut" aria-live="polite"></div>
+    </div>
+
+    <details class="how reveal"><summary>Rechenweg und Annahmen anzeigen</summary>
+      <div class="how-in">
+        <p><b>Referenzzins:</b> Wir bestimmen den Satz, der bei deinem Mietzins galt (BWO-Verlauf), und zählen die Viertelprozent-Schritte bis heute (1,25 %). Pro Schritt steigt die Miete um 3 %, die Senkung ist 1 − 1 / (1 + 3 % × Schritte). Das ergibt 2,91 %, 5,66 %, 8,26 % und so weiter.</p>
+        <p><b>Gegenrechnung:</b> Teuerung zu 40 % (Art. 269a OR) auf Basis der Jahresmittel des Landesindex, vereinfacht, dazu die Kostenpauschale pro Jahr. Beides sind Näherungen. Der Vermieter kann weitere Argumente bringen, etwa Quartierüblichkeit oder Rendite.</p>
+        <p><b>Anfangsmiete:</b> Eine Erhöhung von mehr als etwa 10 % gegenüber dem Vormietzins gilt als Hinweis auf Missbräuchlichkeit. Das ist keine feste Regel, die Gerichte entscheiden im Einzelfall.</p>
+        <p><b>Stand:</b> Rechtsgrundlagen und Zahlen vom 18.11.2026. Vor dem Livegang wird die Rechenlogik juristisch geprüft.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ===================== ZEITLEISTE ===================== -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="tag"><i></i>Der Teil, den niemand zeigt</span><h2 class="split">Wann kommt <em>was?</em></h2><p>Du bekommst nicht automatisch recht, aber du bekommst einen klaren Weg. Hier der Ablauf bei der Anfangsmiete.</p></div>
+    <div class="timeline reveal">
+      <div class="tl-head"><h3>Beispiel: Anfangsmiete anfechten</h3><div class="money"><div><small>Frist</small><b>30 Tage</b></div><div class="back"><small>Schlichtungsverfahren</small><b>gerichtskostenfrei</b></div></div></div>
+      <div class="track" id="track"><i class="bar"></i>
+        <div class="stp"><b>Einziehen</b><span>Tag 0: Übernahme der Wohnung</span></div>
+        <div class="stp"><b>Vormiete prüfen</b><span>Formular oder Auskunft</span></div>
+        <div class="stp warn"><b>Gesuch einreichen</b><span>Spätestens am Tag 30</span></div>
+        <div class="stp"><b>Schlichtung</b><span>Die Behörde kann vermitteln</span></div>
+        <div class="stp"><b>Ergebnis</b><span>Einigung oder weiterer Weg</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CHECKLISTE ===================== -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="tag"><i></i>Worauf du achten solltest</span><h2 class="split">Das darfst du von einem Mietzins-Tool <em>erwarten.</em></h2><p>Frag bei jedem Tool nach. Bei uns gilt das alles.</p></div>
+    <div class="tbl reveal" role="table" aria-label="Checkliste">
+      <div class="tr th" role="row"><div role="columnheader">Frage</div><div role="columnheader">Mietklar</div></div>
+      <div class="tr" role="row"><div role="cell">Rechnet es eine Zahl mit offenem Rechenweg?</div><div role="cell" class="y">Ja</div></div>
+      <div class="tr" role="row"><div role="cell">Verrechnet es Teuerung und Kosten des Vermieters?</div><div role="cell" class="y">Ja, als Schätzung</div></div>
+      <div class="tr" role="row"><div role="cell">Zeigt es die gesetzliche Frist mit Datum?</div><div role="cell" class="y">Ja</div></div>
+      <div class="tr" role="row"><div role="cell">Sagt es ehrlich «kein Anspruch»?</div><div role="cell" class="y">Ja</div></div>
+      <div class="tr" role="row"><div role="cell">Bleiben deine Eingaben auf deinem Gerät?</div><div role="cell" class="y">Ja</div></div>
+      <div class="tr" role="row"><div role="cell">Verspricht es dir einen Erfolg?</div><div role="cell" class="n">Nein, nie</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PREISE ===================== -->
+<section id="preise" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="tag"><i></i>Preis</span><h2 class="split">Prüfen ist gratis. <em>Bezahlt wird der fertige Weg.</em></h2><p>Die Zahl und die Frist bekommst du immer kostenlos. Du bezahlst für den Brief mit deinen Angaben und die Erinnerung.</p></div>
+    <div class="plans" style="grid-template-columns:repeat(auto-fit,minmax(260px,360px));justify-content:center">
+      <div class="tier reveal"><h3>Check</h3><div class="price">0<small>CHF</small></div><p class="for">Für den ersten Überblick</p><ul><li>Anfangsmiete und Referenzzins prüfen</li><li>30-Tage-Uhr mit Datum</li><li>Rechenweg mit Quellen</li></ul><a href="#check" class="btn btn-line">Check starten</a></div>
+      <div class="tier best reveal" style="transition-delay:.08s"><span class="ribbon">Testpreis</span><h3>Brief und Fristen</h3><div class="price">39<small>CHF einmalig, Testannahme</small></div><p class="for">Für deinen persönlichen Antrag</p><ul><li>Brief mit deinen Zahlen als PDF, zum Selbstversand</li><li>Anleitung für das Einschreiben</li><li>Kalender-Erinnerung für Fristen</li><li>Hinweis auf Mieterverband und Schlichtungsbehörde</li></ul><a href="#check" class="btn">Ansehen</a></div>
+    </div>
+    <p class="fine reveal">Der Preis ist eine Testannahme und noch nicht festgelegt. Kein Abo, keine Erfolgsprovision. In dieser Version wird nichts bezahlt.</p>
+  </div>
+</section>
+
+<!-- ===================== EHRLICHKEIT ===================== -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="tag"><i></i>Klare Grenzen</span><h2 class="split">Was wir tun. <em>Und was nicht.</em></h2></div>
+    <div class="honest">
+      <div class="yes reveal"><h3>Das bekommst du</h3><ul><li>Jede Zahl mit Quelle und Stand</li><li>Ein ehrliches Nein, wenn kein Anspruch besteht</li><li>Einen Brief, den du selbst prüfst, unterschreibst und versendest</li><li>Berechnung im Browser, nichts wird gespeichert</li></ul></div>
+      <div class="reveal" style="transition-delay:.08s"><h3>Das versprechen wir nie</h3><ul><li>Garantierte Beträge oder Erfolge</li><li>Rechtsberatung oder Vertretung. Wir sind keine Kanzlei.</li><li>Versand von Briefen in deinem Namen</li><li>Dass jeder Mieter einen Anspruch hat</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section id="faq" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="tag"><i></i>Fragen</span><h2 class="split">Kurz <em>beantwortet.</em></h2></div>
+    <div class="faq reveal">
+      <details><summary>Kann mir der Vermieter kündigen?<span class="plus"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans">Eine Kündigung als Reaktion auf ein berechtigtes Begehren kann anfechtbar sein. Ausschliessen kann das niemand. Wenn du unsicher bist, hilft dir der Mieterverband oder die Schlichtungsbehörde deines Kantons.</div></details>
+      <details><summary>Ist das legal und seriös?<span class="plus"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans">Wir geben Information, Rechenhilfe und Briefvorlagen. Wir vertreten niemanden, versenden nichts und prüfen keinen Einzelfall. Das ist keine Rechtsberatung. Vor dem Livegang wird die Rechenlogik juristisch geprüft.</div></details>
+      <details><summary>Sind meine Daten sicher?<span class="plus"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans">Die Berechnung läuft in deinem Browser. Deine Eingaben werden auf dieser Seite nicht gesendet und nicht gespeichert. Impressum und Datenschutzerklärung sind noch in Arbeit.</div></details>
+      <details><summary>Was passiert, wenn der Vermieter ablehnt?<span class="plus"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans">Bei der Anfangsmiete rufst du innert 30 Tagen nach Mietantritt die Schlichtungsbehörde an. Beim Referenzzins hast du nach einer Ablehnung 30 Tage Zeit dafür. Die Quellen zur Frist bei ausbleibender Antwort sind uneinheitlich. Frag im Zweifel bei der Behörde nach.</div></details>
+      <details><summary>Lohnt sich das bei einem kleinen Betrag?<span class="plus"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans">Pro Viertelprozent Referenzzins-Senkung sind es rund 2,91 % der Netto-Miete, bei 2’000 CHF etwa 58 CHF im Monat. Der Vermieter darf Teuerung und Kosten gegenrechnen. Was unter dem Strich bleibt, zeigt der Check.</div></details>
+      <details><summary>Ich wohne schon lange hier. Geht das noch?<span class="plus"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans">Beim Referenzzins ja, wenn dein Mietzins noch auf einem höheren Satz als heute (1,25 %) beruht. Die Anfangsmiete lässt sich dagegen nur in den 30 Tagen nach Mietantritt anfechten.</div></details>
+      <details><summary>Brauche ich einen Anwalt?<span class="plus"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans">Für das Begehren nicht. Bei Streit helfen der Mieterverband oder ein Anwalt. Das Schlichtungsverfahren selbst ist gerichtskostenfrei.</div></details>
+      <details><summary>Warum zahlen, wenn es Gratis-Rechner gibt?<span class="plus"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary><div class="ans">Der Check ist gratis, die Zahl und die Frist ebenfalls. Du zahlst für den fertigen Brief mit deinen Angaben und die Erinnerung, also für den ganzen Weg aus einer Hand und nicht für die Zahl allein.</div></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===================== FINALE ===================== -->
+<div class="final" id="warteliste">
+  <div class="sky"><i class="orb o1"></i><i class="orb o3"></i></div><div class="grain"></div>
+  <h2 class="split reveal">Zu viel Miete? Prüf es <em>jetzt.</em></h2>
+  <p class="reveal">20 Sekunden. Ohne Konto. Mit ehrlichem Ergebnis.</p>
+  <div class="cta-row reveal" style="justify-content:center;margin-top:34px"><a href="#check" class="btn btn-light" data-magnet>Meine Miete prüfen</a></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a href="#top" class="logo" aria-label="Mietklar"><svg class="mk" viewBox="0 0 160 160"><use href="#mark"/></svg><span class="wdt">Mietklar</span></a>
+    <span>© 2026 Mietklar (Arbeitstitel). Unabhängiger Service, keine Anwaltskanzlei, keine Rechtsberatung. Stand der Angaben: 18.11.2026.</span>
+    <nav aria-label="Rechtliches"><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">Bedingungen</a></nav>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, fine = matchMedia('(pointer:fine)').matches;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v)), lerp = (a, b, t) => a + (b - a) * t;
+  const easeOut = t => 1 - Math.pow(1 - t, 3), easeIO = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  requestAnimationFrame(() => setTimeout(() => document.body.classList.add('loaded'), 80));
+
+  /* ===== Gemeinsamer Zustand: genau EINE rAF-Schleife, Schreibzugriffe nur als transform/opacity ===== */
+  const prog = $('#prog'), pill = $('#pill'), hero = $('.hero'), glow = $('#glow'), sun = $('#sun'), story = $('#story');
+  let sy = scrollY, docH = 1, vh = innerHeight, storyTop = 0, storyH = 1;
+  let heroVis = true, storyVis = false;
+  let mxT = 0, mx = 0, pgx = innerWidth / 2, pgy = 320, gx = pgx, gy = pgy, lastSy = -1, navY = sy, hidden = false;
+  function measure() { vh = innerHeight; docH = Math.max(1, document.documentElement.scrollHeight - vh); const r = story.getBoundingClientRect(); storyTop = r.top + scrollY; storyH = Math.max(1, story.offsetHeight - vh); }
+  measure(); new ResizeObserver(measure).observe(document.body);
+  let scrolling = false, scrT = 0;
+  addEventListener('scroll', () => { sy = scrollY; if (!scrolling) { scrolling = true; document.body.classList.add('scrolling'); } clearTimeout(scrT); scrT = setTimeout(() => { scrolling = false; document.body.classList.remove('scrolling'); }, 160); }, { passive: true });
+  if (fine && !reduce) {
+    hero.addEventListener('pointermove', e => { mxT = e.clientX / innerWidth - .5; pgx = e.clientX; pgy = e.clientY + sy; }, { passive: true });
+    hero.addEventListener('pointerleave', () => { mxT = 0; });
+  }
+
+  /* ===== Hero: Alpen-Schichten (jede Schicht eine eigene Compositor-Ebene) ===== */
+  const ridgeEls = [];
+  (function () {
+    const holder = $('#ridges'), NS = 'http://www.w3.org/2000/svg', W = 1200, H = 400;
+    const rnd = seed => { let q = seed; return () => (q = (q * 16807) % 2147483647) / 2147483647; };
+    [
+      { seed: 3, base: 236, amp: 170, f: 1.1, fill: '#5BA5A2', op: .5 },
+      { seed: 7, base: 276, amp: 150, f: 1.6, fill: '#3A8A8D', op: .82 },
+      { seed: 11, base: 318, amp: 122, f: 2.1, fill: '#256C74', op: .95 },
+      { seed: 19, base: 352, amp: 92, f: 2.7, fill: '#17505B', op: 1 },
+      { seed: 23, base: 388, amp: 44, f: 3.4, fill: '#F5F2EC', op: 1 }
+    ].forEach(L => {
+      const r = rnd(L.seed), a = r() * 6, b = r() * 6, c = r() * 6; let d = `M0 ${H}`;
+      for (let x = 0; x <= W; x += 8) { const t = x / W, k = .62 * (1 - Math.abs(Math.sin(t * L.f * Math.PI + a))) + .28 * (1 - Math.abs(Math.sin(t * L.f * 2.7 * Math.PI + b))) + .1 * Math.sin(t * L.f * 6 * Math.PI + c); d += ` L${x} ${(L.base - L.amp * k).toFixed(1)}`; }
+      d += ` L${W} ${H}Z`;
+      const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('class', 'ridge'); svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('preserveAspectRatio', 'xMidYMax slice'); svg.setAttribute('aria-hidden', 'true');
+      const p = document.createElementNS(NS, 'path'); p.setAttribute('d', d); p.setAttribute('fill', L.fill); p.setAttribute('opacity', L.op); svg.appendChild(p); holder.appendChild(svg); ridgeEls.push(svg);
+    });
+  })();
+  new IntersectionObserver(es => { heroVis = es[0].isIntersecting; $('.hero .sky').classList.toggle('paused', !heroVis); }).observe(hero);
+  new IntersectionObserver(es => { $('.final .sky').classList.toggle('paused', !es[0].isIntersecting); }).observe($('.final'));
+  function applyHero() {
+    const s = Math.min(sy, 700);
+    ridgeEls.forEach((el, i) => { el.style.transform = `translate3d(${(-mx * (i + 1) * 18).toFixed(2)}px,${(s * .07 * (4 - i)).toFixed(2)}px,0)`; });
+    sun.style.transform = `translate3d(${(-mx * 30).toFixed(1)}px,${(s * .2).toFixed(1)}px,0)`;
+    glow.style.transform = `translate3d(${gx.toFixed(1)}px,${gy.toFixed(1)}px,0)`;
+  }
+
+  /* ===== Überschriften wortweise ===== */
+  $$('h2.split').forEach(h => {
+    let d = 0;
+    const walk = n => [...n.childNodes].forEach(c => {
+      if (c.nodeType === 3) { const f = document.createDocumentFragment(); c.textContent.split(/(\s+)/).forEach(t => { if (!t) return; if (/^\s+$/.test(t)) { f.appendChild(document.createTextNode(t)); return; } const s = document.createElement('span'); s.className = 'word'; s.textContent = t; s.style.transitionDelay = (d++ * .07) + 's'; f.appendChild(s); }); c.replaceWith(f); }
+      else if (c.nodeType === 1) walk(c);
+    }); walk(h);
+  });
+  $$('.hero h1 .ln').forEach((l, i) => { l.className = 'ln reveal'; l.style.transitionDelay = (.15 + i * .14) + 's'; l.style.display = 'block'; });
+
+  /* ===== Reveal in zwei Stufen: erst Ebene vorbereiten (will-change), dann animieren, danach freigeben ===== */
+  const prep = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('wc'); prep.unobserve(e.target); } }), { rootMargin: '500px 0px 500px 0px' });
+  const show = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; const t = e.target; t.classList.add('wc', 'in'); show.unobserve(t); setTimeout(() => t.classList.remove('wc'), 2600); }), { threshold: .15, rootMargin: '0px 0px -40px 0px' });
+  $$('.reveal, h2.split').forEach(el => { prep.observe(el); show.observe(el); });
+  $$('.hero .reveal').forEach(el => el.classList.add('wc'));
+  setTimeout(() => $$('.hero .reveal').forEach(el => { el.classList.add('in'); setTimeout(() => el.classList.remove('wc'), 2600); }), 120);
+
+  /* ===== Zähler ===== */
+  const fmtN = (n, d) => n.toFixed(d).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '’');
+  const cio = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return; cio.unobserve(e.target);
+    const to = +e.target.dataset.count, dec = +(e.target.dataset.dec || 0); if (reduce) { e.target.textContent = fmtN(to, dec); return; }
+    const t0 = performance.now(), step = t => { const p = clamp((t - t0) / 1600, 0, 1); e.target.textContent = fmtN(to * easeOut(p), dec); if (p < 1) requestAnimationFrame(step); }; requestAnimationFrame(step);
+  }), { threshold: .6 });
+  $$('[data-count]').forEach(el => cio.observe(el));
+  new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { $('#track').classList.add('in'); o.disconnect(); } }, { threshold: .5 }).observe($('#track'));
+
+  /* ===== Neigung und Magnet: rAF-gedrosselt, nur transform ===== */
+  function pointerFx(el, fn, reset) {
+    let raf = 0, ev = null;
+    el.addEventListener('pointermove', e => { ev = e; if (!raf) raf = requestAnimationFrame(() => { raf = 0; const r = el.getBoundingClientRect(); el.style.transform = fn(ev.clientX - r.left, ev.clientY - r.top, r); }); }, { passive: true });
+    el.addEventListener('pointerleave', () => { cancelAnimationFrame(raf); raf = 0; el.style.transform = reset || ''; });
+  }
+  if (!reduce && fine) {
+    $$('[data-magnet]').forEach(b => pointerFx(b, (x, y, r) => `translate3d(${((x - r.width / 2) * .16).toFixed(1)}px,${((y - r.height / 2) * .22).toFixed(1)}px,0)`));
+    $$('.pain').forEach(t => pointerFx(t, (x, y, r) => `rotateY(${((x / r.width - .5) * 7).toFixed(2)}deg) rotateX(${(-(y / r.height - .5) * 7).toFixed(2)}deg) translateY(-6px)`));
+  }
+
+  /* =========================================================
+     RECHENKERN (rein, ohne DOM). Stand der Daten: 18.11.2026
+     Quellen: BWO-Verlauf (law.ch-Wiedergabe bis 2020, danach Pressemitteilungen),
+     Überwälzung: 3 % pro Viertelprozent (Moneyland, law.ch). Alles Schätzung, keine Rechtsberatung.
+     ========================================================= */
+  const CUR = { rate: 1.25, label: '1,25 %', since: '2.9.2025', next: '1.12.2026' };
+  /* [Jahr, Monat, Satz] ab Gültigkeit */
+  const REF = [[2008,9,3.5],[2009,6,3.25],[2009,9,3.0],[2010,12,2.75],[2011,12,2.5],[2012,6,2.25],[2013,9,2.0],[2015,6,1.75],[2017,6,1.5],[2020,3,1.25],[2023,6,1.5],[2023,12,1.75],[2025,3,1.5],[2025,9,1.25]];
+  /* Jahresmittel Landesindex (Näherung, in %); 2026 geschätzt */
+  const INF = {2008:2.4,2009:-0.5,2010:0.7,2011:0.2,2012:-0.7,2013:-0.2,2014:0.0,2015:-1.1,2016:-0.4,2017:0.5,2018:0.9,2019:0.4,2020:-0.7,2021:0.6,2022:2.8,2023:2.1,2024:1.1,2025:0.2,2026:0.3};
+  const FORM_FULL = ['BS','BE','FR','GE','LU','ZG','ZH'], FORM_PART = ['NE','VD'];
+  function refAt(y, m) {
+    if (y * 12 + m < 2008 * 12 + 9) return null;
+    let r = null; for (const [yy, mm, rate] of REF) { if (yy * 12 + mm <= y * 12 + m) r = rate; } return r;
+  }
+  const stepsFor = base => Math.max(0, Math.round((base - CUR.rate) / 0.25));
+  const reduction = n => n > 0 ? 1 - 1 / (1 + 0.03 * n) : 0;
+  function cumInflation(y, m, now) {
+    const ny = now.getFullYear(), nm = now.getMonth() + 1; let f = 1, yy = y, mm = m;
+    while (yy * 12 + mm < ny * 12 + nm) { mm++; if (mm > 12) { mm = 1; yy++; } const i = (INF[yy] !== undefined ? INF[yy] : INF[2026]) / 100; f *= Math.pow(1 + i, 1 / 12); }
+    return f;
+  }
+  function monthsSince(y, m, now) { return Math.max(0, (now.getFullYear() * 12 + now.getMonth() + 1) - (y * 12 + m)); }
+  /* Hauptrechnung: Referenzzins-Senkung inkl. Gegenrechnung */
+  function calcRef(rent, y, m, kp, now) {
+    now = now || new Date();
+    const base = refAt(y, m);
+    if (base === null) return { before: true };
+    const steps = stepsFor(base), red = reduction(steps);
+    const cum = cumInflation(y, m, now), months = monthsSince(y, m, now);
+    const teuPct = Math.max(0, 0.4 * (cum - 1)), kosPct = Math.max(0, (kp || 0) * months / 12);
+    const gross = rent * red, teu = steps > 0 ? rent * teuPct : 0, kos = steps > 0 ? rent * kosPct : 0;
+    const net = Math.max(0, gross - teu - kos);
+    return { base, steps, red, gross, teu, kos, net, netYear: net * 12, teuPct, kosPct, months };
+  }
+  /* Anfangsmiete: Erhöhung, Frist (30 Tage ab Mietantritt) */
+  function calcInit(oldR, newR, startISO, now) {
+    now = now || new Date();
+    const pct = oldR > 0 ? (newR - oldR) / oldR * 100 : null;
+    const d0 = startISO ? new Date(startISO + 'T00:00:00') : null; let left = null, deadline = null, future = null;
+    if (d0 && !isNaN(d0)) {
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      deadline = new Date(d0.getTime() + 30 * 864e5);
+      const diff = Math.round((deadline - today) / 864e5); left = diff;
+      if (d0 > today) future = Math.round((d0 - today) / 864e5);
+    }
+    return { pct, left, deadline, future };
+  }
+  if (typeof module !== 'undefined') module.exports = { refAt, stepsFor, reduction, calcRef, calcInit, cumInflation, CUR, REF };
+
+  /* =========================================================
+     UI: Schnell-Check (Hero), Rechner-Tabs, Verlauf-Diagramm
+     Alles läuft im Browser. Es wird nichts gesendet oder gespeichert.
+     ========================================================= */
+  const NOW = new Date();
+  const chf = n => 'CHF ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '’');
+  const num = n => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '’');
+  const pc = (p, d = 1) => p.toFixed(d).replace('.', ',') + ' %';
+  const fdate = d => d.toLocaleDateString('de-CH', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+  function fillMY(sm, sy, m, y) {
+    sm.innerHTML = MONTHS.map((n, i) => `<option value="${i + 1}"${i + 1 === m ? ' selected' : ''}>${n}</option>`).join('');
+    let h = ''; for (let yy = NOW.getFullYear(); yy >= 2008; yy--) h += `<option value="${yy}"${yy === y ? ' selected' : ''}>${yy}</option>`; sy.innerHTML = h;
+  }
+  const setW = (el, w) => el.style.setProperty('--w', Math.max(1.5, Math.min(100, w)) + '%');
+
+  /* ----- Hero Schnell-Check ----- */
+  const hR = $('#hRent'), hM = $('#hM'), hY = $('#hY');
+  fillMY(hM, hY, 12, 2023);
+  function updateHero() {
+    const rent = +hR.value || 0, y = +hY.value, m = +hM.value, r = calcRef(rent, y, m, .005, NOW);
+    $('#hV0').textContent = chf(rent);
+    if (r.before) { $('#hBase').textContent = 'Vor 9/2008: Satz aus dem Vertrag nötig'; $('#hWarn').textContent = 'Nicht berechenbar'; return; }
+    $('#hBase').textContent = 'Basis: Referenzzins ' + pc(r.base, 2);
+    if (r.steps === 0 || rent <= 0) {
+      $('#hV1').textContent = '–'; $('#hV2').textContent = '–'; $('#hV3').textContent = 'Kein Anspruch';
+      setW($('#hB1'), 1); setW($('#hB2'), 1); setW($('#hB3'), 1); $('#hWarn').textContent = 'Ehrlich: kein Anspruch über den Referenzzins'; return;
+    }
+    $('#hV1').textContent = '– ' + num(r.gross); $('#hV2').textContent = '+ ' + num(r.teu + r.kos); $('#hV3').textContent = chf(r.net) + ' / Mt.';
+    setW($('#hB1'), 70); setW($('#hB2'), 70 * (r.teu + r.kos) / r.gross); setW($('#hB3'), 70 * r.net / r.gross);
+    $('#hWarn').textContent = 'Richtwert, keine Zusage';
+  }
+  ['input', 'change'].forEach(ev => { hR.addEventListener(ev, updateHero); hM.addEventListener(ev, updateHero); hY.addEventListener(ev, updateHero); });
+  updateHero();
+
+  /* ----- Pfade (Karten) ----- */
+  const pathHTML = (badge, cls, title, text) => `<div class="path"><span class="badge ${cls || ''}">${badge}</span><div><b>${title}</b><p>${text}</p></div></div>`;
+  async function reveal(el) { for (const p of $$('.path', el)) { await sleep(reduce ? 0 : 90); p.classList.add('in'); } }
+
+  /* ----- Anfangsmiete ----- */
+  const CANTONS = [['AG','Aargau'],['AI','Appenzell Innerrhoden'],['AR','Appenzell Ausserrhoden'],['BE','Bern'],['BL','Basel-Landschaft'],['BS','Basel-Stadt'],['FR','Freiburg'],['GE','Genf'],['GL','Glarus'],['GR','Graubünden'],['JU','Jura'],['LU','Luzern'],['NE','Neuenburg'],['NW','Nidwalden'],['OW','Obwalden'],['SG','St. Gallen'],['SH','Schaffhausen'],['SO','Solothurn'],['SZ','Schwyz'],['TG','Thurgau'],['TI','Tessin'],['UR','Uri'],['VD','Waadt'],['VS','Wallis'],['ZG','Zug'],['ZH','Zürich']];
+  const aC = $('#aCanton'), aO = $('#aOld'), aN = $('#aNew'), aD = $('#aDate'), aOut = $('#aOut');
+  aC.innerHTML = CANTONS.map(([c, n]) => `<option value="${c}"${c === 'ZH' ? ' selected' : ''}>${n}</option>`).join('');
+  (() => { const d = new Date(NOW.getTime() - 10 * 864e5); aD.value = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); })();
+  let aTok = 0;
+  function updateA() {
+    const o = +aO.value, n = +aN.value, r = calcInit(o, n, aD.value, NOW), c = aC.value;
+    const circ = 326.7, frac = r.left === null ? 0 : Math.max(0, Math.min(1, r.left / 30));
+    let ringNum, ringTxt, verdictBadge = 'Hinweis', verdictCls = '', headline, text;
+    if (r.future !== null) { ringNum = r.future; ringTxt = 'Tage bis Start'; }
+    else if (r.left === null) { ringNum = '–'; ringTxt = 'Datum fehlt'; }
+    else if (r.left < 0) { ringNum = 0; ringTxt = 'Frist vorbei'; }
+    else { ringNum = r.left; ringTxt = 'Tage übrig'; }
+    if (r.pct === null) { headline = 'Gib die beiden Mietzinse ein.'; text = 'Sobald Vormietzins und neuer Mietzins stehen, siehst du die Erhöhung.'; }
+    else if (r.pct >= 10) { verdictBadge = 'Auffällig'; verdictCls = 'warn'; headline = 'Die Erhöhung liegt über etwa 10 %.'; text = 'Das kann ein Anfechtungsgrund sein. Ob er trägt, entscheidet der Einzelfall. Beweisen musst du die Missbräuchlichkeit.'; }
+    else if (r.pct > 0) { verdictBadge = 'Eher schwierig'; headline = 'Die Erhöhung liegt unter etwa 10 %.'; text = 'Allein wegen der Erhöhung ist eine Anfechtung eher schwierig. Notlage oder Wohnungsmangel können trotzdem ein Grund sein.'; }
+    else { verdictBadge = 'Kein Hinweis'; headline = 'Keine Erhöhung gegenüber der Vormiete.'; text = 'Wegen einer Erhöhung gibt es hier keinen Anfechtungsgrund. Der Referenzzins-Check kann trotzdem etwas ergeben.'; }
+    let fristTxt;
+    if (r.future !== null) fristTxt = `Dein Mietantritt ist in ${r.future} Tagen. Die Frist von 30 Tagen beginnt dann. Spätestens am ${fdate(r.deadline)} muss das Gesuch eingereicht sein.`;
+    else if (r.left === null) fristTxt = 'Trag dein Mietantritts-Datum ein, dann zeigen wir dir das Datum.';
+    else if (r.left < 0) fristTxt = `Die 30 Tage endeten am ${fdate(r.deadline)}. Danach ist eine Anfechtung in der Regel nicht mehr möglich. Frag bei Zweifeln die Schlichtungsbehörde.`;
+    else fristTxt = `Spätestens am ${fdate(r.deadline)} muss das Gesuch bei der Schlichtungsbehörde sein. Im Zweifel früher.`;
+    let formTxt;
+    if (FORM_FULL.includes(c)) formTxt = 'In deinem Kanton ist das amtliche Formular für den Anfangsmietzins Pflicht (BWO, Stand 9/2026). Dort steht der Vormietzins. Fehlt das Formular, kann der Mietzins nicht gültig vereinbart sein. Das ist ein Einzelfall, frag den Mieterverband.';
+    else if (FORM_PART.includes(c)) formTxt = 'In deinem Kanton gilt die Formularpflicht nur teilweise (bestimmte Gemeinden oder Wohnungsgrössen). Prüfe, ob du ein Formular bekommen hast.';
+    else formTxt = 'In deinem Kanton gibt es laut BWO-Verzeichnis keine Formularpflicht. Den Vormietzins kannst du beim Vermieter verlangen (Art. 256a OR).';
+    const frac2 = frac;
+    aOut.innerHTML = `<h3>Dein Anfangsmiete-Check</h3><p class="lead">Rechnung nach deinen Angaben. Keine Rechtsberatung.</p>
+      <div class="ringrow" style="margin-top:20px"><div class="ring"><svg viewBox="0 0 120 120"><circle class="rb" cx="60" cy="60" r="52"/><circle class="rf" cx="60" cy="60" r="52" stroke-dasharray="${circ}" stroke-dashoffset="${(circ * (1 - frac2)).toFixed(1)}"/></svg><div class="rn"><b>${ringNum}</b><span>${ringTxt}</span></div></div>
+      <div style="flex:1;min-width:200px"><div class="big ${r.pct !== null && r.pct >= 10 ? 'ok' : 'no'}" style="margin-top:0">${r.pct === null ? '–' : (r.pct > 0 ? '+ ' : '') + pc(r.pct)}<small>Erhöhung</small></div><p class="sub2"><b>${headline}</b></p></div></div>
+      <p class="sub2">${text}</p>
+      <div class="paths">${pathHTML('Frist', r.left !== null && r.left >= 0 ? 'warn' : '', '30-Tage-Uhr', fristTxt)}${pathHTML('Formular', '', 'Vormietzins und Kanton', formTxt)}${pathHTML('Weg', 'good', 'Wie es weitergeht', 'Gesuch bei der Schlichtungsbehörde deines Kantons, gerichtskostenfrei. Der Mieterverband berät.')}</div>
+      <span class="soon">Brief und Kalender-Erinnerung folgen</span>
+      <p class="foot">Gründe nach Art. 270 OR: Notlage oder Wohnungsmangel, oder erhebliche Erhöhung gegenüber dem Vormietzins. Information, keine Rechtsberatung.</p>`;
+    const tok = ++aTok; setTimeout(() => { if (tok === aTok) reveal(aOut); }, 30);
+  }
+  [aC, aO, aN, aD].forEach(e => { e.addEventListener('input', updateA); e.addEventListener('change', updateA); });
+  updateA();
+
+  /* ----- Referenzzins ----- */
+  const rR = $('#rRent'), rM = $('#rM'), rY = $('#rY'), rK = $('#rKind'), rS = $('#rKos'), rOut = $('#rOut');
+  fillMY(rM, rY, 12, 2023);
+  let rTok = 0;
+  function updateR() {
+    const rent = +rR.value || 0, y = +rY.value, m = +rM.value, kp = (+rS.value) / 100, kind = rK.value;
+    $('#rKosV').textContent = pc(+rS.value) + ' pro Jahr';
+    const r = calcRef(rent, y, m, kp, NOW); let html;
+    const KIND = { gen: 'Bei Genossenschaften und gemeinnützigen Wohnungen gilt oft die Kostenmiete. Der Referenzzins-Mechanismus greift dort häufig nicht. Prüfe Statuten und Mietvertrag.', idx: 'Bei Staffel- oder Indexmiete gelten andere Regeln. Eine Senkung wegen des Referenzzinses ist oft ausgeschlossen. Prüfe deinen Vertrag.', sub: 'Bei subventionierten oder befristeten Mietverhältnissen gelten Sonderregeln. Frag die zuständige Stelle.' };
+    const kindPath = kind !== 'std' ? pathHTML('Achtung', 'warn', 'Besondere Mietform', KIND[kind]) : '';
+    if (r.before) html = `<h3>Dein Referenzzins-Check</h3><p class="lead">Für Mietzinse vor September 2008 brauchst du den damals im Vertrag genannten Satz.</p><p class="sub2">Frag beim Vermieter nach der letzten Mietzinsanzeige. Danach lässt sich die Senkung nach dem gleichen Schema rechnen.</p>`;
+    else if (rent <= 0) html = `<h3>Dein Referenzzins-Check</h3><p class="lead">Gib deine Netto-Miete ein.</p>`;
+    else if (r.steps === 0) html = `<h3>Dein Referenzzins-Check</h3><p class="lead">Rechnung nach deinen Angaben. Keine Rechtsberatung.</p>
+      <div class="big no">Kein Anspruch</div><p class="sub2">Dein Mietzins beruht auf einem Referenzzins von <b>${pc(r.base, 2)}</b>. Heute gilt <b>${CUR.label}</b> (seit ${CUR.since}). Eine Senkung wegen des Referenzzinses ist deshalb nicht möglich. Lieber ein ehrliches Nein als ein Brief, der nichts bringt.</p>
+      <div class="paths">${kindPath}${pathHTML('Später', 'good', 'Wenn sich der Satz ändert', 'Die nächste Publikation ist am ' + CUR.next + '. Sinkt der Satz, kann sich dein Anspruch ändern.')}${pathHTML('Anderer Weg', '', 'Anfangsmiete?', 'Die lässt sich nur in den 30 Tagen nach Mietantritt anfechten. Dafür gibt es den anderen Check.')}</div>`;
+    else {
+      const covered = r.net <= 0;
+      html = `<h3>Dein Referenzzins-Check</h3><p class="lead">Rechnung nach deinen Angaben. Keine Rechtsberatung.</p>
+      <div class="big ${covered ? 'no' : 'ok'}">${chf(r.net)}<small>pro Monat, nach Gegenrechnung</small></div>
+      <p class="sub2">${covered ? 'Die geschätzte Gegenrechnung deckt die Senkung. Der Vermieter dürfte Teuerung und Kosten dagegenhalten.' : 'Das sind etwa <b>' + chf(r.netYear) + ' pro Jahr</b>, wenn der Vermieter die Gegenrechnung geltend macht. Ohne Gegenrechnung wären es ' + chf(r.gross) + ' pro Monat.'}</p>
+      <div class="paths">
+        ${pathHTML('Senkung', 'good', pc(r.red * 100, 2) + ' · ' + r.steps + ' × 0,25 Punkte', 'Dein Mietzins beruht auf ' + pc(r.base, 2) + ', heute gilt ' + CUR.label + '. Das ergibt ' + chf(r.gross) + ' pro Monat.')}
+        ${pathHTML('Gegenrechnung', 'warn', '– ' + chf(r.teu + r.kos) + ' (Schätzung)', 'Teuerung zu 40 %: ' + chf(r.teu) + '. Kostenpauschale: ' + chf(r.kos) + '. Beides sind Näherungen, der Vermieter kann weitere Gründe bringen.')}
+        ${kindPath}
+        ${pathHTML('Wirkung', '', 'Nicht rückwirkend', 'Eine Senkung gilt frühestens ab dem nächsten Kündigungstermin. Das Begehren muss rechtzeitig vor der Kündigungsfrist eintreffen, am besten per Einschreiben.')}
+        ${pathHTML('Wenn er ablehnt', '', 'Schlichtungsbehörde', 'Der Vermieter hat 30 Tage zur Antwort. Bei Ablehnung hast du 30 Tage für die Schlichtungsbehörde. Die Quellen zur Frist bei ausbleibender Antwort sind uneinheitlich, frag im Zweifel nach.')}
+      </div><span class="soon">Brief und Kalender-Erinnerung folgen</span>
+      <p class="foot">Rechenweg unten. Stand: ${fdate(NOW)}. Richtwert, keine Zusage, keine Rechtsberatung.</p>`;
+    }
+    rOut.innerHTML = html; const tok = ++rTok; setTimeout(() => { if (tok === rTok) reveal(rOut); }, 30);
+  }
+  [rR, rM, rY, rK, rS].forEach(e => { e.addEventListener('input', updateR); e.addEventListener('change', updateR); });
+  updateR();
+
+  /* ----- Tabs ----- */
+  const tabA = $('#tabA'), tabR = $('#tabR'), pA = $('#panelA'), pR = $('#panelR');
+  function tab(which) {
+    const a = which === 'A'; tabA.setAttribute('aria-selected', a); tabR.setAttribute('aria-selected', !a); pA.hidden = !a; pR.hidden = a;
+    $$('.reveal', a ? pA : pR).forEach(e => e.classList.add('in')); (a ? updateA : updateR)();
+  }
+  tabA.addEventListener('click', () => tab('A')); tabR.addEventListener('click', () => tab('R'));
+
+  /* ----- Verlauf-Diagramm ----- */
+  (function () {
+    const svg = $('#chart'), W = 1000, H = 380, L = 56, Rr = 972, T = 30, B = 332, x0 = 2008 + 8 / 12, x1 = NOW.getFullYear() + (NOW.getMonth() + 1) / 12 + .05, ylo = 1, yhi = 3.75;
+    const X = t => L + (t - x0) / (x1 - x0) * (Rr - L), Y = v => B - (v - ylo) / (yhi - ylo) * (B - T), NS = 'http://www.w3.org/2000/svg';
+    const mk = (n, a, parent) => { const e = document.createElementNS(NS, n); Object.entries(a).forEach(([k, v]) => e.setAttribute(k, v)); (parent || svg).appendChild(e); return e; };
+    const defs = mk('defs', {}); const g = mk('linearGradient', { id: 'ag', x1: 0, y1: 0, x2: 0, y2: 1 }, defs); mk('stop', { offset: '0', 'stop-color': '#2D7A80', 'stop-opacity': '.28' }, g); mk('stop', { offset: '1', 'stop-color': '#2D7A80', 'stop-opacity': '0' }, g);
+    [1, 1.5, 2, 2.5, 3, 3.5].forEach(v => { mk('line', { class: 'gl', x1: L, x2: Rr, y1: Y(v), y2: Y(v) }); mk('text', { class: 'gt', x: L - 12, y: Y(v) + 4, 'text-anchor': 'end' }).textContent = v.toFixed(1).replace('.', ',') + ' %'; });
+    for (let yy = 2010; yy <= NOW.getFullYear(); yy += 4) mk('text', { class: 'gt', x: X(yy), y: B + 28, 'text-anchor': 'middle' }).textContent = yy;
+    let d = '', prev = null; const pts = REF.map(([y, m, r]) => [y + (m - 1) / 12, r]);
+    pts.forEach(([t, r], i) => { d += (i ? ` H${X(t).toFixed(1)} V${Y(r).toFixed(1)}` : `M${X(t).toFixed(1)} ${Y(r).toFixed(1)}`); });
+    d += ` H${X(x1).toFixed(1)}`;
+    mk('path', { d: d + ` V${B} H${X(pts[0][0]).toFixed(1)} Z`, fill: 'url(#ag)' });
+    const line = mk('path', { class: 'ln', d }); const len = line.getTotalLength ? line.getTotalLength() : 3000;
+    line.style.strokeDasharray = len; line.style.strokeDashoffset = reduce ? 0 : len; line.style.transition = 'stroke-dashoffset 2.6s cubic-bezier(.65,0,.35,1)';
+    const marks = [[pts[0][0], 3.5, '3,5 % (2008)', 'start', 12, -14], [pts[9][0], 1.25, '1,25 % (2020)', 'middle', 0, 30], [pts[11][0], 1.75, '1,75 % (2023)', 'middle', 0, -16], [pts[13][0], 1.25, 'Heute 1,25 %', 'end', -14, 34]];
+    const dots = marks.map(([t, v, lab, an, dx, dy], i) => { const c = mk('circle', { class: 'pt' + (i === 3 ? ' now' : ''), cx: X(t), cy: Y(v), r: i === 3 ? 9 : 7 }); c.style.opacity = reduce ? 1 : 0; c.style.transition = 'opacity .6s ease ' + (0.5 + i * .55) + 's'; const tx = mk('text', { class: 'lb', x: X(t) + dx, y: Y(v) + dy, 'text-anchor': an }); tx.textContent = lab; tx.style.opacity = reduce ? 1 : 0; tx.style.transition = 'opacity .6s ease ' + (0.6 + i * .55) + 's'; return [c, tx]; });
+    new IntersectionObserver((es, o) => { if (!es[0].isIntersecting) return; o.disconnect(); line.style.strokeDashoffset = 0; dots.flat().forEach(e => e.style.opacity = 1); }, { threshold: .35 }).observe($('#chartBox'));
+  })();
+
+  /* =========================================================
+     GLOBUS (nur Scroll-Story): d3-geo auf Canvas
+     Optimiert: keine shadowBlur pro Frame, Pill-Sprites gecacht,
+     Path2D wiederverwendet, adaptive Auflösung
+     ========================================================= */
+  const CH = [[5.96,46.21],[6.10,46.14],[6.25,46.33],[6.55,46.42],[6.82,46.40],[6.80,46.16],[6.89,46.05],[7.03,45.93],[7.20,45.87],[7.48,45.93],[7.86,45.92],[7.98,46.17],[8.10,46.25],[8.38,46.46],[8.46,46.30],[8.45,46.20],[8.70,46.10],[8.78,45.99],[8.93,45.84],[9.03,45.83],[9.10,45.94],[9.00,46.05],[9.20,46.17],[9.27,46.32],[9.33,46.50],[9.60,46.30],[9.85,46.38],[10.05,46.44],[10.17,46.23],[10.33,46.62],[10.48,46.63],[10.47,46.85],[10.22,46.87],[10.10,46.98],[9.88,47.05],[9.53,47.05],[9.53,47.27],[9.63,47.45],[9.48,47.55],[9.20,47.65],[8.88,47.67],[8.80,47.74],[8.60,47.80],[8.40,47.75],[8.45,47.61],[8.10,47.57],[7.78,47.55],[7.59,47.59],[7.52,47.50],[7.17,47.49],[7.01,47.50],[6.95,47.33],[6.72,47.15],[6.50,46.95],[6.40,46.75],[6.10,46.45],[6.04,46.32]];
+  const ME = { id: 'du', label: 'Du', ll: [8.31, 47.05] };
+  const SRC = [
+    { label: 'Gesetz', ll: [7.45, 46.95], dx: -14, dy: 26 },
+    { label: 'Kanton', ll: [8.54, 47.37], dx: 12, dy: -20, sdx: -8, sdy: -34 },
+    { label: 'Vormiete', ll: [6.63, 46.52], dx: -8, dy: 26, sdx: 10, sdy: 26 },
+    { label: 'Referenzzins', ll: [8.95, 46.0], dx: 10, dy: 24 },
+    { label: 'Frist', ll: [9.37, 47.42], dx: 10, dy: -20, sdx: 4, sdy: 26 }
+  ];
+  const D2R = Math.PI / 180;
+  let LAND = null, GRAT = null;
+  if (window.d3 && window.topojson) {
+    GRAT = d3.geoGraticule().step([15, 15]).precision(5)();
+    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json').then(r => r.json()).then(w => {
+      // Einmal vorberechnen: Landmassen als 3D-Einheitsvektoren (Kleinstinseln und Antarktis weglassen)
+      const f = topojson.feature(w, w.objects.land), g = f.type === 'FeatureCollection' ? f.features[0].geometry : f.geometry;
+      const polys = g.type === 'MultiPolygon' ? g.coordinates : [g.coordinates], list = [];
+      polys.forEach(coords => {
+        const poly = { type: 'Polygon', coordinates: coords }, c = d3.geoCentroid(poly);
+        if (c[1] < -58 || d3.geoArea(poly) < .00012) return;
+        const ring = coords[0].slice(0, -1), n = ring.length; if (n < 3) return;
+        const xyz = new Float32Array(n * 3);
+        ring.forEach(([lo, la], i) => { const l = lo * D2R, ph = la * D2R, cp = Math.cos(ph); xyz[3 * i] = cp * Math.cos(l); xyz[3 * i + 1] = cp * Math.sin(l); xyz[3 * i + 2] = Math.sin(ph); });
+        const cl = c[0] * D2R, cph = c[1] * D2R, cv = [Math.cos(cph) * Math.cos(cl), Math.cos(cph) * Math.sin(cl), Math.sin(cph)];
+        let rr = 0; for (let i = 0; i < n; i++) { const d = xyz[3 * i] * cv[0] + xyz[3 * i + 1] * cv[1] + xyz[3 * i + 2] * cv[2]; rr = Math.max(rr, Math.acos(Math.min(1, Math.max(-1, d)))); }
+        list.push({ xyz, n, cv, sr: rr >= Math.PI / 2 ? 1.01 : Math.sin(rr), dots: new Float32Array(n) });
+      });
+      LAND = list;
+    }).catch(() => {});
+  }
+  /* Eigene Orthografie fuer Landmassen: Horizont-Beschnitt mit Bogen entlang des Randes, ~0.3 ms statt ~6 ms (d3) */
+  function landPath(ctx, cx, cy, R, lon, lat) {
+    const l0 = lon * D2R, p0 = lat * D2R, cl = Math.cos(l0), sl = Math.sin(l0), cp = Math.cos(p0), sp = Math.sin(p0);
+    const vx = cp * cl, vy = cp * sl, vz = sp, ex = -sl, ey = cl, nx = -sp * cl, ny = -sp * sl, nz = cp;
+    let started = false;
+    const put = (X, Y) => { if (!started) { ctx.moveTo(X, Y); started = true; } else ctx.lineTo(X, Y); };
+    for (let k = 0; k < LAND.length; k++) {
+      const o = LAND[k], c = o.cv; if (c[0] * vx + c[1] * vy + c[2] * vz < -o.sr) continue;
+      const a = o.xyz, n = o.n, dots = o.dots; let i0 = -1;
+      for (let i = 0; i < n; i++) { const d = a[3 * i] * vx + a[3 * i + 1] * vy + a[3 * i + 2] * vz; dots[i] = d; if (i0 < 0 && d >= 0) i0 = i; }
+      if (i0 < 0) continue;
+      started = false; let exitAng = 0;
+      for (let m = 0; m < n; m++) {
+        const i = (i0 + m) % n, j = (i0 + m + 1) % n, da = dots[i], db = dots[j], ax = a[3 * i], ay = a[3 * i + 1], az = a[3 * i + 2];
+        if (da >= 0) put(cx + R * (ax * ex + ay * ey), cy - R * (ax * nx + ay * ny + az * nz));
+        if ((da >= 0) !== (db >= 0)) {
+          const t = da / (da - db), bx = a[3 * j], by = a[3 * j + 1], bz = a[3 * j + 2];
+          let px = ax + t * (bx - ax), py = ay + t * (by - ay), pz = az + t * (bz - az); const L = Math.hypot(px, py, pz) || 1; px /= L; py /= L; pz /= L;
+          let sx = px * ex + py * ey, sy = px * nx + py * ny + pz * nz; const l2 = Math.hypot(sx, sy) || 1; sx /= l2; sy /= l2;
+          const ang = Math.atan2(sy, sx);
+          if (da >= 0) { exitAng = ang; put(cx + R * sx, cy - R * sy); }
+          else {
+            let dl = ang - exitAng; while (dl > Math.PI) dl -= 2 * Math.PI; while (dl < -Math.PI) dl += 2 * Math.PI;
+            const steps = Math.max(1, Math.ceil(Math.abs(dl) / .12));
+            for (let q = 1; q < steps; q++) { const gq = exitAng + dl * q / steps; put(cx + R * Math.cos(gq), cy - R * Math.sin(gq)); }
+            put(cx + R * sx, cy - R * sy);
+          }
+        }
+      }
+      ctx.closePath();
+    }
+  }
+  function smoothPath(pts) {
+    const n = pts.length, p = new Path2D();
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      if (!i) p.moveTo(p1[0], p1[1]);
+      p.bezierCurveTo(p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6, p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6, p2[0], p2[1]);
+    }
+    p.closePath(); return p;
+  }
+  const dotSprite = (() => { const c = document.createElement('canvas'); c.width = c.height = 48; const x = c.getContext('2d'), g = x.createRadialGradient(24, 24, 0, 24, 24, 24); g.addColorStop(0, 'rgba(255,236,222,1)'); g.addColorStop(.3, 'rgba(255,214,190,.85)'); g.addColorStop(1, 'rgba(255,214,190,0)'); x.fillStyle = g; x.fillRect(0, 0, 48, 48); return c; })();
+
+  function Globe(canvas) {
+    const ctx = canvas.getContext('2d', { desynchronized: true }); let W = 0, H = 0, DPR = Math.min(devicePixelRatio || 1, 2); const sprites = new Map();
+    function sprite(text, bg, fg, px) {
+      const key = text + '|' + bg + '|' + px; let o = sprites.get(key); if (o) return o;
+      const c = document.createElement('canvas'), x = c.getContext('2d'), font = `600 ${px}px "Instrument Sans", system-ui, sans-serif`; x.font = font;
+      const w = Math.ceil(x.measureText(text).width + 24), h = px + 14, pad = 26, cw = w + pad * 2, chh = h + pad * 2;
+      c.width = Math.ceil(cw * DPR); c.height = Math.ceil(chh * DPR); x.scale(DPR, DPR); x.font = font;
+      x.beginPath(); x.roundRect(pad, pad, w, h, h / 2); x.shadowColor = 'rgba(0,0,0,.35)'; x.shadowBlur = 16; x.shadowOffsetY = 6; x.fillStyle = bg; x.fill(); x.shadowColor = 'transparent';
+      x.fillStyle = fg; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(text, pad + w / 2, pad + h / 2 + 1);
+      o = { c, w: cw, h: chh }; sprites.set(key, o); return o;
+    }
+    const pillAt = (x, y, text, bg, fg, px) => { const s = sprite(text, bg, fg, px); ctx.drawImage(s.c, x - s.w / 2, y - s.h / 2, s.w, s.h); };
+    function resize() { const r = canvas.getBoundingClientRect(); W = r.width; H = r.height; canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR); ctx.setTransform(DPR, 0, 0, DPR, 0, 0); }
+    function setDPR(d) { DPR = d; sprites.clear(); resize(); }
+    resize(); if (document.fonts) document.fonts.ready.then(() => sprites.clear());
+
+    function draw(s, t) {
+      const { lon, lat, R, cx, cy } = s; ctx.clearRect(0, 0, W, H);
+      if (!window.d3) return;
+      const proj = d3.geoOrthographic().translate([cx, cy]).scale(R).rotate([-lon, -lat]).clipAngle(90).precision(1.4);
+      const path = d3.geoPath(proj, ctx), huge = R > 3 * Math.max(W, H);
+      if (!huge) {
+        const a = ctx.createRadialGradient(cx, cy, R * .97, cx, cy, R * 1.16); a.addColorStop(0, 'rgba(140,196,189,.38)'); a.addColorStop(1, 'rgba(140,196,189,0)');
+        ctx.fillStyle = a; ctx.beginPath(); ctx.arc(cx, cy, R * 1.16, 0, 7); ctx.fill();
+        const g = ctx.createRadialGradient(cx - R * .35, cy - R * .45, R * .05, cx, cy, R); g.addColorStop(0, '#245f68'); g.addColorStop(.55, '#143f48'); g.addColorStop(1, '#08222a');
+        ctx.beginPath(); path({ type: 'Sphere' }); ctx.fillStyle = g; ctx.fill();
+        if (s.gratA > .02) { ctx.beginPath(); path(GRAT); ctx.strokeStyle = `rgba(255,255,255,${.08 * s.gratA})`; ctx.lineWidth = 1; ctx.stroke(); }
+        if (LAND && s.landA > .02) { ctx.beginPath(); landPath(ctx, cx, cy, R, lon, lat); ctx.fillStyle = `rgba(255,255,255,${.16 * s.landA})`; ctx.fill(); ctx.strokeStyle = `rgba(255,255,255,${.28 * s.landA})`; ctx.lineWidth = .7; ctx.stroke(); }
+      }
+      const pts = CH.map(p => proj(p));
+      if (pts.every(Boolean)) {
+        const poly = smoothPath(pts), cxy = pts.reduce((a, p) => [a[0] + p[0] / pts.length, a[1] + p[1] / pts.length], [0, 0]);
+        ctx.lineJoin = 'round';
+        // Glow ohne shadowBlur: drei breite, weiche Konturen
+        const gl = s.big ? [[34, .035, '140,196,189'], [22, .05, '140,196,189'], [12, .07, '140,196,189']] : [[26, .07, '240,160,115'], [14, .12, '240,160,115']];
+        gl.forEach(([w, a, c]) => { ctx.strokeStyle = `rgba(${c},${a * s.chA})`; ctx.lineWidth = w; ctx.stroke(poly); });
+        ctx.fillStyle = s.big ? `rgba(140,196,189,${.16 * s.chA})` : `rgba(240,160,115,${s.chA * .9})`; ctx.fill(poly);
+        ctx.strokeStyle = `rgba(255,214,190,${.35 + .65 * s.chA})`; ctx.lineWidth = s.big ? 2 : 1.3; ctx.stroke(poly);
+        if (s.topoA > .02) for (let k = 1; k <= 5; k++) { const f = 1 - k * .15; ctx.save(); ctx.translate(cxy[0], cxy[1]); ctx.scale(f, f); ctx.translate(-cxy[0], -cxy[1]); ctx.strokeStyle = `rgba(255,214,190,${.2 * s.topoA * (1 - k * .13)})`; ctx.lineWidth = 1 / f; ctx.stroke(poly); ctx.restore(); }
+      }
+      const c0 = [lon, lat], vis = ll => d3.geoDistance(ll, c0) < 1.4, me = proj(ME.ll), sm = W < 800;
+      if (s.dots) SRC.concat([ME]).forEach((p, i) => { const q = proj(p.ll); if (!q || !vis(p.ll)) return; const ph = ((t * .5 + i * .31) % 1);
+        ctx.beginPath(); ctx.arc(q[0], q[1], 2.4 + ph * 9, 0, 7); ctx.strokeStyle = `rgba(255,224,205,${(1 - ph) * .5})`; ctx.lineWidth = 1; ctx.stroke(); ctx.beginPath(); ctx.arc(q[0], q[1], 2.4, 0, 7); ctx.fillStyle = '#FFE6D5'; ctx.fill(); });
+      if (s.pinsA > .01 && me) {
+        SRC.forEach((p, i) => { const q = proj(p.ll); if (!q) return; const x0 = q[0], y0 = q[1], x1 = me[0], y1 = me[1], dist = Math.hypot(x1 - x0, y1 - y0);
+          const mxp = (x0 + x1) / 2, myp = (y0 + y1) / 2 - dist * .32, L = dist * 1.15, a = s.arcsA;
+          if (a > .01) {
+            ctx.save(); ctx.setLineDash([L * a, L]); ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(x0, y0); ctx.quadraticCurveTo(mxp, myp, x1, y1);
+            ctx.strokeStyle = 'rgba(140,196,189,.16)'; ctx.lineWidth = 8; ctx.stroke(); ctx.strokeStyle = 'rgba(160,214,207,.85)'; ctx.lineWidth = 2; ctx.stroke(); ctx.restore();
+            if (a > .85) { const u = (t * .32 + i * .21) % 1, uu = 1 - u; const px = uu * uu * x0 + 2 * uu * u * mxp + u * u * x1, py = uu * uu * y0 + 2 * uu * u * myp + u * u * y1; ctx.drawImage(dotSprite, px - 14, py - 14, 28, 28); }
+          } });
+        ctx.globalAlpha = s.pinsA;
+        SRC.forEach(p => { const q = proj(p.ll); if (!q) return; ctx.beginPath(); ctx.arc(q[0], q[1], 6, 0, 7); ctx.fillStyle = '#fff'; ctx.fill(); ctx.beginPath(); ctx.arc(q[0], q[1], 11, 0, 7); ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 1.5; ctx.stroke();
+          pillAt(q[0] + (sm && p.sdx !== undefined ? p.sdx : p.dx), q[1] + (sm && p.sdy !== undefined ? p.sdy : p.dy), p.label, 'rgba(255,255,255,.94)', '#0F2226', sm ? 12.5 : 14); });
+        const ph = (t * .6) % 1; ctx.beginPath(); ctx.arc(me[0], me[1], 9 + ph * 26, 0, 7); ctx.strokeStyle = `rgba(240,160,115,${(1 - ph) * .7})`; ctx.lineWidth = 2; ctx.stroke();
+        ctx.beginPath(); ctx.arc(me[0], me[1], 9, 0, 7); ctx.fillStyle = '#F0A073'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#fff'; ctx.stroke();
+        pillAt(me[0], me[1] + (sm ? 32 : -30), 'Du', '#F0A073', '#0A2027', 15);
+        ctx.globalAlpha = 1;
+      }
+    }
+    return { draw, resize, setDPR, get dpr() { return DPR; }, get W() { return W; }, get H() { return H; } };
+  }
+
+  /* ===== Story ===== */
+  const sg = Globe($('#storyCanvas')), caps = $$('.cap', story), dots = $$('#storyDots i'), hint = $('#hint');
+  let curCap = -1, bad = 0, prevNow = 0;
+  new IntersectionObserver(es => { storyVis = es[0].isIntersecting; }, { rootMargin: '120px' }).observe(story);
+  function storyState(p, W, H) {
+    const small = W < 800, R0 = Math.min(W, H) * (small ? .36 : .33), wpx = Math.min(W * (small ? .92 : .44), 640), Rz = wpx * 16.6;
+    const z = easeIO(clamp((p - .1) / .34, 0, 1)), spin = easeOut(clamp(p / .36, 0, 1));
+    return { lon: lerp(-72, 8.2, spin), lat: lerp(14, 46.8, spin), R: Math.exp(lerp(Math.log(R0), Math.log(Rz), z)), cx: small ? W / 2 : W * .64, cy: small ? H * .36 : H * .5,
+      landA: 1 - z, gratA: 1 - z, chA: .4 + .6 * z, topoA: z, big: z > .5, dots: p < .44, pinsA: clamp((p - .46) / .08, 0, 1), arcsA: clamp((p - .6) / .16, 0, 1) };
+  }
+
+  /* ===== Die eine Schleife ===== */
+  function tick(now) {
+    requestAnimationFrame(tick);
+    const fiv = now - prevNow; prevNow = now;
+    const scrolled = sy !== lastSy;
+    if (scrolled) {
+      prog.style.transform = `scaleX(${clamp(sy / docH, 0, 1)})`;
+      const dy = sy - navY;
+      if (sy < 600) { if (hidden) { hidden = false; pill.classList.remove('hide'); } navY = sy; }
+      else if (dy > 8) { if (!hidden) { hidden = true; pill.classList.add('hide'); } navY = sy; }
+      else if (dy < -8) { if (hidden) { hidden = false; pill.classList.remove('hide'); } navY = sy; }
+    }
+    if (heroVis && !reduce) {
+      const moving = scrolled || Math.abs(mxT - mx) > .0004 || Math.abs(pgx - gx) > .3 || Math.abs(pgy - gy) > .3;
+      if (moving) { mx = lerp(mx, mxT, .07); gx = lerp(gx, pgx, .1); gy = lerp(gy, pgy, .1); applyHero(); }
+    }
+    if (storyVis) {
+      const p = clamp((sy - storyTop) / storyH, 0, 1), t0 = performance.now();
+      sg.draw(storyState(p, sg.W, sg.H), now / 1000);
+      if (window.__fp) window.__fp.push([p, performance.now() - t0]);
+      // Adaptive Aufloesung nach ECHTER Frame-Zeit: starke Geraete behalten volle Schaerfe
+      if (scrolled && fiv < 200) { bad = bad * .95 + (fiv > 24 ? .05 : 0); if (bad > .06 && sg.dpr > 1) { sg.setDPR(Math.max(1, sg.dpr - .5)); bad = 0; } }
+      const idx = p < .3 ? 0 : p < .5 ? 1 : p < .72 ? 2 : 3;
+      if (idx !== curCap) { curCap = idx; caps.forEach((c, i) => c.classList.toggle('on', i === idx)); dots.forEach((d, i) => d.classList.toggle('on', i === idx)); }
+      hint.style.opacity = p < .04 ? 1 : 0;
+    }
+    lastSy = sy;
+  }
+  applyHero(); requestAnimationFrame(tick);
+  let rz = 0; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { sg.resize(); measure(); }, 120); });
+
+  /* ===== Funken ===== */
+  function sparkle(host, n = 12) {
+    if (reduce) return; const colors = ['#F0A073', '#8CC4BD', '#FFE6D5', '#2D7A80'];
+    for (let i = 0; i < n; i++) { const s = document.createElement('span'); s.className = 'spark'; s.style.background = colors[i % 4]; s.style.left = '50%'; s.style.top = '50%'; host.style.position = 'relative'; host.appendChild(s);
+      const a = i / n * Math.PI * 2 + Math.random() * .5, d = 32 + Math.random() * 26;
+      s.animate([{ transform: 'translate(-50%,-50%) scale(1) rotate(0)', opacity: 1 }, { transform: `translate(calc(-50% + ${Math.cos(a) * d}px), calc(-50% + ${Math.sin(a) * d}px)) scale(.3) rotate(140deg)`, opacity: 0 }], { duration: 700, easing: 'cubic-bezier(.22,1,.36,1)' }).onfinish = () => s.remove(); }
+  }
+
+})();
+</script>
+</body>
+</html>
